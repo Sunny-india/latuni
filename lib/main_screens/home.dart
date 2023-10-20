@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:latuni/my_widgets/decorated_container.dart';
 
+import '../minor_screens/search_page.dart';
+import '../my_widgets/fake_search.dart';
+
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
     return DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          appBar: AppBar(
+      length: 4,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(120),
+          child: AppBar(
+            title: const FakeSearch(),
+            //searchContainer(),
             elevation: 0,
             backgroundColor: Colors.grey.shade100,
             bottom: TabBar(
@@ -25,18 +33,20 @@ class Home extends StatelessWidget {
                   RepeatedTab(categoryName: 'Clothing'),
                 ]),
           ),
-          body: const SafeArea(
-              child: TabBarView(
-            children: [
-              Center(child: Text('Kisan Bhai')),
-              Center(child: Text('Dairy')),
-              Center(
-                child: Text('Kirana Grocery'),
-              ),
-              Center(child: Text('Clothing')),
-            ],
-          )),
-        ));
+        ),
+        body: const SafeArea(
+            child: TabBarView(
+          children: [
+            Center(child: Text('Kisan Bhai')),
+            Center(child: Text('Dairy')),
+            Center(
+              child: Text('Kirana Grocery'),
+            ),
+            Center(child: Text('Clothing')),
+          ],
+        )),
+      ),
+    );
   }
 }
 
