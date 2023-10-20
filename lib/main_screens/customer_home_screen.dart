@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:latuni/main_screens/category_page.dart';
 
 import '../my_widgets/decorated_container.dart';
 import 'home.dart';
@@ -15,9 +16,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
 
   List<Widget> pages = [
     const Home(),
-    const Center(
-      child: Text('search'),
-    ),
+    const CategoryPage(),
     const Center(
       child: Text('shop'),
     ),
