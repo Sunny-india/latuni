@@ -43,14 +43,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       backgroundColor: Colors.grey.shade100,
       body: SafeArea(child: pages[_selectedIndex]),
       bottomNavigationBar: DecoratedContainer(
-        myHeight: size.height * .12,
+        topLeftCurve: 20,
+        topRightCurve: 20,
+        bottomLeftCurve: 0,
+        bottomRightCurve: 0,
+        myHeight: size.height * .14,
         backgroundColor: Colors.grey.shade100,
         shadowRightColor: Colors.grey.shade400,
         myChild: BottomNavigationBar(
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
-            selectedIconTheme: IconThemeData(
-              size: width * .09,
-            ),
+            selectedIconTheme: IconThemeData(size: width * .09),
             unselectedItemColor: Colors.grey.shade900,
             iconSize: width * .065,
             selectedItemColor: Colors.red.shade600,

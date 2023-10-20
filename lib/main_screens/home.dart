@@ -25,21 +25,15 @@ class Home extends StatelessWidget {
                   RepeatedTab(categoryName: 'Clothing'),
                 ]),
           ),
-          body: SafeArea(
+          body: const SafeArea(
               child: TabBarView(
             children: [
-              Center(
-                child: Text('Kisan Bhai'),
-              ),
-              Center(
-                child: Text('Dairy'),
-              ),
+              Center(child: Text('Kisan Bhai')),
+              Center(child: Text('Dairy')),
               Center(
                 child: Text('Kirana Grocery'),
               ),
-              Center(
-                child: Text('Clothin'),
-              ),
+              Center(child: Text('Clothing')),
             ],
           )),
         ));
