@@ -17,7 +17,6 @@ class Home extends StatelessWidget {
           preferredSize: const Size.fromHeight(120),
           child: AppBar(
             title: const FakeSearch(),
-            //searchContainer(),
             elevation: 0,
             backgroundColor: Colors.grey.shade100,
             bottom: TabBar(
