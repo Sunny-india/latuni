@@ -47,7 +47,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
         topRightCurve: 20,
         bottomLeftCurve: 0,
         bottomRightCurve: 0,
-        myHeight: size.height * .14,
+        myHeight: height * .14,
         backgroundColor: Colors.grey.shade100,
         shadowRightColor: Colors.grey.shade400,
         myChild: BottomNavigationBar(
