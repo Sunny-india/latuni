@@ -15,7 +15,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   int _selectedIndex = 0;
 
   List<Widget> pages = [
-    const Home(),
+    const HomePage(),
     const CategoryPage(),
     const Center(
       child: Text('shop'),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:latuni/my_widgets/decorated_container.dart';
 
-import '../minor_screens/search_page.dart';
 import '../my_widgets/fake_search.dart';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
