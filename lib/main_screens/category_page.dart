@@ -46,13 +46,10 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  Container leftContainer(Size size) {
-    return Container(
+  SizedBox leftContainer(Size size) {
+    return SizedBox(
       width: size.width * .23,
       height: size.height * .78,
-      decoration: BoxDecoration(
-        color: Colors.blue.shade300,
-      ),
       child: ListView.builder(
           itemCount: categories.length,
           itemBuilder: (context, index) {
@@ -66,17 +63,28 @@ class _CategoryPageState extends State<CategoryPage> {
                 });
               },
               child: Container(
-                height: 100,
+                height: size.height / categories.length,
                 decoration: BoxDecoration(
                   color: categories[index].isSelected
                       ? Colors.grey.shade100
                       : Colors.blue.shade300,
-                  border: Border(
-                    bottom: BorderSide(
-                        color: categories[index].isSelected
-                            ? Colors.transparent
-                            : Colors.red.shade900),
-                  ),
+                  gradient: categories[index].isSelected
+                      ? null
+                      : LinearGradient(
+                          colors: [
+                              Colors.blue.shade100,
+                              Colors.blue.shade300,
+                              Colors.blue.shade500,
+                              Colors.blue.shade600
+                            ],
+                          stops: const [
+                              0.2,
+                              0.4,
+                              .6,
+                              .8
+                            ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight),
                 ),
                 child: Center(
                   child: Text(
@@ -96,7 +104,7 @@ class _CategoryPageState extends State<CategoryPage> {
       width: size.width * .77,
       height: size.height * .78,
       decoration: BoxDecoration(
-        color: Colors.red.shade100,
+        color: Colors.grey.shade100,
       ),
       child: const Center(child: Text('Right Container')),
     );
