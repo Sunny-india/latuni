@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:latuni/categories/kisan_page.dart';
 import 'package:latuni/my_widgets/fake_search.dart';
 
 /// global list totally related to our categories listed on Home
@@ -173,10 +174,8 @@ class _CategoryPageState extends State<CategoryPage> {
             categories[value].isSelected = true;
           });
         },
-        children: [
-          Center(
-            child: Text('Page One for Kisan Bhai category'),
-          ),
+        children: const [
+          KisanPage(),
           Center(
             child: Text('Page two for Dairy category'),
           ),
