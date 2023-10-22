@@ -34,7 +34,10 @@ class SubCategoryPage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Text(mainCategoryName),
+        child: Text(
+          mainCategoryName,
+          style: const TextStyle(fontSize: 30),
+        ),
       ),
     );
   }

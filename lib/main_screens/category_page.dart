@@ -1,10 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:latuni/categories/kisan_page.dart';
 import 'package:latuni/my_widgets/fake_search.dart';
 
-/// global list totally related to our categories listed on Home
+/// global list totally related to our categories listed on HomePage()
 
 List<CategoryData> categories = [
   CategoryData(label: 'Kisan Bhai'),
@@ -65,8 +63,8 @@ class _CategoryPageState extends State<CategoryPage> {
 
   SizedBox leftContainer(Size size) {
     return SizedBox(
-      width: size.width * .23,
-      height: size.height * .78,
+      width: size.width * .20,
+      height: size.height * .75,
       child: ListView.builder(
           itemCount: categories.length,
           itemBuilder: (context, index) {
@@ -88,65 +86,18 @@ class _CategoryPageState extends State<CategoryPage> {
                 });
               },
               child: Container(
-                height: categories[index].isSelected
-                    ? 80
-                    : size.height / categories.length,
-                width: size.width * .23,
-                margin: categories[index].isSelected
-                    ? EdgeInsets.symmetric(horizontal: 5, vertical: 5)
-                    : const EdgeInsets.only(left: 5, bottom: 2),
+                height: 100,
+                // width: size.width * .20,
                 decoration: BoxDecoration(
                   color: categories[index].isSelected
                       ? Colors.grey.shade100
                       : Colors.blue.shade300,
-                  gradient: categories[index].isSelected
-                      ? null
-                      : LinearGradient(
-                          colors: [
-                              Colors.red.shade100,
-                              Colors.red.shade50,
-                              Colors.red.shade100,
-                              Colors.red.shade50,
-                              Colors.redAccent
-                            ],
-                          stops: const [
-                              0.2,
-                              0.4,
-                              .6,
-                              .8,
-                              .9
-                            ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight),
-                  borderRadius: categories[index].isSelected
-                      ? BorderRadius.circular(12)
-                      : null,
-                  boxShadow: categories[index].isSelected
-                      ? [
-                          BoxShadow(
-                              color: Colors.grey.shade200,
-                              offset: const Offset(-2, -2),
-                              spreadRadius: 2,
-                              blurRadius: 2),
-                          BoxShadow(
-                              color: Colors.grey.shade300,
-                              offset: const Offset(
-                                2,
-                                2,
-                              ),
-                              spreadRadius: 2,
-                              blurRadius: 2)
-                        ]
-                      : null,
                 ),
-                child: Transform.rotate(
-                  angle: pi / -3,
-                  child: Center(
-                    child: Text(
-                      categories[index].label.toString(),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.black, fontSize: 18),
-                    ),
+                child: Center(
+                  child: Text(
+                    categories[index].label.toString(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.black, fontSize: 18),
                   ),
                 ),
               ),
@@ -157,8 +108,8 @@ class _CategoryPageState extends State<CategoryPage> {
 
   Container rightContainer(Size size) {
     return Container(
-      width: size.width * .77,
-      height: size.height * .78,
+      width: size.width * .80,
+      height: size.height * .75,
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
       ),
@@ -175,6 +126,9 @@ class _CategoryPageState extends State<CategoryPage> {
           });
         },
         children: const [
+          // created model from it and applied to all other
+          // pages down in this list, because they
+          // carry the same type of data
           KisanPage(),
           Center(
             child: Text('Page two for Dairy category'),
