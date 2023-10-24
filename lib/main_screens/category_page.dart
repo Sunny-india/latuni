@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:latuni/categories/dairy_page.dart';
 import 'package:latuni/categories/kisan_page.dart';
 import 'package:latuni/my_widgets/fake_search.dart';
 
@@ -45,26 +46,20 @@ class _CategoryPageState extends State<CategoryPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            Positioned(
-              left: 0,
-              bottom: 0,
-              child: leftContainer(size),
-            ),
-            Positioned(
-              right: 0,
-              bottom: 0,
-              child: rightContainer(size),
-            ),
+            Positioned(left: 0, bottom: 0, child: leftContainer(size)),
+            Positioned(right: 0, bottom: 0, child: rightContainer(size)),
           ],
         ),
       ),
     );
   }
 
-  SizedBox leftContainer(Size size) {
-    return SizedBox(
+  Widget leftContainer(Size size) {
+    return Container(
       width: size.width * .20,
-      height: size.height * .75,
+      height: size.height * .80,
+      color: Colors.grey.shade300,
+      padding: const EdgeInsets.only(top: 24),
       child: ListView.builder(
           itemCount: categories.length,
           itemBuilder: (context, index) {
@@ -77,7 +72,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   //   item.isSelected = false;
                   // }
                   // categories[index].isSelected = true;
-                  /// and this code is for pageview actually
+                  /// and this code is for Pageview actually
                   _pageController.animateToPage(
                     index,
                     duration: const Duration(milliseconds: 900),
@@ -87,11 +82,10 @@ class _CategoryPageState extends State<CategoryPage> {
               },
               child: Container(
                 height: 100,
-                // width: size.width * .20,
                 decoration: BoxDecoration(
                   color: categories[index].isSelected
                       ? Colors.grey.shade100
-                      : Colors.blue.shade300,
+                      : Colors.grey.shade300,
                 ),
                 child: Center(
                   child: Text(
@@ -108,8 +102,8 @@ class _CategoryPageState extends State<CategoryPage> {
 
   Container rightContainer(Size size) {
     return Container(
-      width: size.width * .80,
-      height: size.height * .75,
+      width: size.width * 0.80,
+      height: size.height * 0.80,
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
       ),
@@ -130,9 +124,7 @@ class _CategoryPageState extends State<CategoryPage> {
           // pages down in this list, because they
           // carry the same type of data
           KisanPage(),
-          Center(
-            child: Text('Page two for Dairy category'),
-          ),
+          DairyPage(),
           Center(
             child: Text('Page three for Kirana category'),
           ),

@@ -8,3 +8,4 @@
 // are kept on asset images folder
 
 List<String> kisanBhai = ['sutli', 'Polybag', 'sutli', 'polybag'];
+List<String> dairy = ['rubber bands', 'poly bags', 'carry bags', 'Pouches'];

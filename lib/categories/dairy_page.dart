@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:latuni/utilities/category_list.dart';
 
 import '../my_widgets/category_widgets.dart';
+import '../utilities/category_list.dart';
 
 /// Ist Category page
-class KisanPage extends StatefulWidget {
-  const KisanPage({super.key});
+class DairyPage extends StatefulWidget {
+  const DairyPage({super.key});
 
   @override
-  State<KisanPage> createState() => _KisanPageState();
+  State<DairyPage> createState() => _DairyPageState();
 }
 
-class _KisanPageState extends State<KisanPage> {
+class _DairyPageState extends State<DairyPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
@@ -23,27 +23,26 @@ class _KisanPageState extends State<KisanPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CategoryHeaderLabel(headerLabel: 'Kisan Bhai'),
+            const CategoryHeaderLabel(headerLabel: 'Dairy'),
             Container(
               height: size.height * .75,
               color: Colors.red,
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
-                      crossAxisSpacing: 9,
+                      crossAxisSpacing: 8,
                       mainAxisSpacing: 30),
-                  itemCount:
-                      kisanBhai.length, // as much as the images available
+                  itemCount: dairy.length,
                   itemBuilder: (context, index) {
                     return SubCategoryModel(
                       mainCategoryName: 'Kisan Bhai',
-                      subCategoryName: kisanBhai[index],
+                      subCategoryName: dairy[index],
                       assetName:
                           'assets/images/rubber_bands/disco/DISCO_$index.JPG',
-                      assetLabel: kisanBhai[index],
+                      assetLabel: dairy[index],
                     );
                   }),
-            )
+            ),
           ],
         ),
       ),

@@ -7,11 +7,17 @@ class CategoryHeaderLabel extends StatelessWidget {
   final String headerLabel;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24, bottom: 5),
-      child: Text(
-        headerLabel,
-        style: const TextStyle(fontSize: 24, letterSpacing: 5.4),
+    Size size = MediaQuery.sizeOf(context);
+    return Container(
+      height: size.height * .05,
+      alignment: Alignment.centerLeft,
+      color: Colors.lime,
+      padding: const EdgeInsets.only(left: 5, top: 3),
+      child: FittedBox(
+        child: Text(
+          headerLabel,
+          style: const TextStyle(fontSize: 24, letterSpacing: 20),
+        ),
       ),
     );
   }
@@ -43,19 +49,27 @@ class SubCategoryModel extends StatelessWidget {
         }));
       },
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 60,
-            width: 100,
-            child: Image(
-              image: AssetImage(
-                assetName,
+          Expanded(
+            child: SizedBox(
+              height: 80,
+              width: 80,
+              child: Image(
+                image: AssetImage(
+                  assetName,
+                ),
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high,
               ),
-              fit: BoxFit.fill,
-              filterQuality: FilterQuality.high,
             ),
           ),
-          Text(assetLabel), // see the comments over there, if need be
+          Text(
+            assetLabel,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ), // see the comments over there, if need be
         ],
       ),
     );
