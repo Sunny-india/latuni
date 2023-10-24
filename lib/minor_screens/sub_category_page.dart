@@ -16,6 +16,7 @@ class SubCategoryPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.grey.shade100, // the same as that of Scaffold
         elevation: 0,
         automaticallyImplyLeading: false,

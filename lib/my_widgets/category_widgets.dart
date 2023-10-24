@@ -11,7 +11,7 @@ class CategoryHeaderLabel extends StatelessWidget {
     return Container(
       height: size.height * .05,
       alignment: Alignment.centerLeft,
-      color: Colors.lime,
+      // color: Colors.lime,
       padding: const EdgeInsets.only(left: 5, top: 3),
       child: FittedBox(
         child: Text(
@@ -84,10 +84,10 @@ class SliderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: size.height * .75,
+      height: size.height * .8,
       width: size.width * .05,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 30),
+        margin: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           color: Colors.brown.shade100,
           borderRadius: BorderRadius.circular(20),
@@ -100,7 +100,9 @@ class SliderBar extends StatelessWidget {
               const Text('<<'),
               Text(
                 mainCategName,
-                style: const TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+                textScaleFactor: 1.3,
+                style: const TextStyle(fontSize: 14),
               ),
               const Text('>>'),
             ],
