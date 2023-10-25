@@ -21,7 +21,7 @@ class _KisanPageState extends State<KisanPage> {
         /// Because this page is used on 80% height, 80% width
         /// of the capacity of where it is called, so make it useful that way.
         child: Padding(
-          padding: EdgeInsets.only(right: 1, left: 1),
+          padding: const EdgeInsets.only(right: 1, left: 1, top: 3),
           child: Stack(
             children: [
               Positioned(
