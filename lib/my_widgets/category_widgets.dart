@@ -65,10 +65,12 @@ class SubCategoryModel extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            assetLabel,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          FittedBox(
+            child: Text(
+              assetLabel,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ), // see the comments over there, if need be
         ],
       ),
@@ -97,14 +99,14 @@ class SliderBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              const Text('<<'),
+              mainCategName == 'CLOTHING' ? const Text('') : const Text('<<'),
               Text(
                 mainCategName,
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.3,
                 style: const TextStyle(fontSize: 14),
               ),
-              const Text('>>'),
+              mainCategName == 'KISAN BHAI' ? const Text('') : const Text('>>'),
             ],
           ),
         ),

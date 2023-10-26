@@ -88,3 +88,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: fonts/M-italic.ttf
+        - asset: fonts/M-variable.ttf
+    - family: Playpen
+      fonts:
+        - asset: fonts/play_pen.ttf

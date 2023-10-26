@@ -12,7 +12,9 @@ class DecoratedContainer extends StatelessWidget {
       this.topLeftCurve = 6,
       this.topRightCurve = 6,
       this.bottomLeftCurve = 6,
-      this.bottomRightCurve = 6});
+      this.bottomRightCurve = 6,
+      this.innerHorizontalPadding = 4,
+      this.innerVerticalPadding = 4});
   final Widget myChild;
   final double? topLeftCurve;
   final double? topRightCurve;
@@ -23,12 +25,15 @@ class DecoratedContainer extends StatelessWidget {
   final Color backgroundColor;
   final Color? shadowLeftColor;
   final Color shadowRightColor;
+  final double innerHorizontalPadding;
+  final double innerVerticalPadding;
   @override
   Widget build(BuildContext context) {
     return Container(
         height: myHeight,
         width: myWidth,
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        padding: EdgeInsets.symmetric(
+            horizontal: innerHorizontalPadding, vertical: innerVerticalPadding),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(topLeftCurve!),

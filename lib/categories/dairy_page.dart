@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../my_widgets/category_widgets.dart';
 import '../utilities/category_list.dart';
 
-/// Ist Category page
+/// 2nd Category page
 class DairyPage extends StatefulWidget {
   const DairyPage({super.key});
 
@@ -47,7 +47,7 @@ class _DairyPageState extends State<DairyPage> {
                             itemCount: dairy.length,
                             itemBuilder: (context, index) {
                               return SubCategoryModel(
-                                mainCategoryName: 'Kisan Bhai',
+                                mainCategoryName: 'Dairy',
                                 subCategoryName: dairy[index],
                                 assetName:
                                     'assets/images/rubber_bands/disco/DISCO_$index.JPG',

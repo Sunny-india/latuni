@@ -8,4 +8,22 @@
 // are kept on asset images folder
 
 List<String> kisanBhai = ['sutli', 'Polybag', 'sutli', 'polybag'];
-List<String> dairy = ['rubber bands', 'poly bags', 'carry bags', 'Pouches'];
+List<String> dairy = [
+  'rubber bands',
+  'poly bags',
+  'carry bags',
+  'Pouches',
+]; // lldpe,
+List<String> kiranaGrocery = [
+  'PolyBags',
+  'LD',
+  'PP',
+  'Non-woven U.cut',
+];
+
+List<String> clothing = [
+  'Non-woven U.cut',
+  'Jumbo',
+  'BOPP(T)',
+  'Sutli'
+]; // Sonata, Moksh

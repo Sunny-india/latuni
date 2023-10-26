@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:latuni/main_screens/category_page.dart';
+import 'package:latuni/main_screens/profile_page.dart';
+import 'package:latuni/main_screens/store_page.dart';
 
 import '../my_widgets/decorated_container.dart';
+import 'cart_page.dart';
 import 'home.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -17,15 +20,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   List<Widget> pages = [
     const HomePage(),
     const CategoryPage(),
-    const Center(
-      child: Text('shop'),
-    ),
-    const Center(
-      child: Text('cart'),
-    ),
-    const Center(
-      child: Text('profile'),
-    ),
+    const StoresPage(),
+    const CartPage(),
+    const ProfilePage(),
   ];
   void onBottomNavigationTap(int index) {
     setState(() {
@@ -36,7 +33,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
-    var height = size.height;
     var width = size.width;
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -56,7 +52,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           myBottomNavigationBarItem(myIcon: Icons.home, myLabel: 'Home'),
           myBottomNavigationBarItem(myIcon: Icons.search, myLabel: 'search'),
           myBottomNavigationBarItem(
-              myIcon: Icons.shop_2_outlined, myLabel: 'shop'),
+              myIcon: Icons.shop_2_outlined, myLabel: 'store'),
           myBottomNavigationBarItem(
               myIcon: Icons.shopping_cart_outlined, myLabel: 'cart'),
           myBottomNavigationBarItem(myIcon: Icons.person, myLabel: 'profile'),

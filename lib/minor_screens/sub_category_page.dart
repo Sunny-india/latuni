@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../my_widgets/appbar_widgets.dart';
+
 class SubCategoryPage extends StatelessWidget {
   const SubCategoryPage(
       {super.key,
@@ -12,7 +14,7 @@ class SubCategoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.sizeOf(context);
+    //  Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -20,19 +22,8 @@ class SubCategoryPage extends StatelessWidget {
         backgroundColor: Colors.grey.shade100, // the same as that of Scaffold
         elevation: 0,
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
-          ),
-        ),
-        title: Text(
-          subCategoryName,
-          style: TextStyle(color: Colors.red.shade900),
-        ),
+        leading: const AppbarBackButton(),
+        title: AppbarTitle(title: subCategoryName),
       ),
       body: Center(
         child: Text(

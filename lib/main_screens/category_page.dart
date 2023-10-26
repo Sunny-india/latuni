@@ -3,6 +3,9 @@ import 'package:latuni/categories/dairy_page.dart';
 import 'package:latuni/categories/kisan_page.dart';
 import 'package:latuni/my_widgets/fake_search.dart';
 
+import '../categories/clothing_page.dart';
+import '../categories/kirana_grocery_page.dart';
+
 /// global list totally related to our categories listed on HomePage()
 
 List<CategoryData> categories = [
@@ -125,12 +128,8 @@ class _CategoryPageState extends State<CategoryPage> {
           // carry the same type of data
           KisanPage(),
           DairyPage(),
-          Center(
-            child: Text('Page three for Kirana category'),
-          ),
-          Center(
-            child: Text('Page four for Clothing category'),
-          ),
+          KiranaGroceryPage(),
+          ClothingPage(),
         ],
       ),
     );
