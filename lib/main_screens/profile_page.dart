@@ -39,9 +39,29 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   background: Container(
+                    padding: EdgeInsets.only(left: size.width * .09, top: 20),
                     decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Colors.yellow, Colors.brown])),
+                      gradient:
+                          LinearGradient(colors: [Colors.yellow, Colors.brown]),
+                    ),
+                    child: const Row(
+                      children: [
+                        CircleAvatar(
+                            radius: 50,
+                            backgroundImage: AssetImage(
+                                'assets/images/rubber_bands/disco/DISCO_0.JPG')),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          'GUEST',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                              fontFamily: 'Playpen'),
+                        )
+                      ],
+                    ),
                   ),
                 );
               }),
@@ -49,13 +69,27 @@ class _ProfilePageState extends State<ProfilePage> {
             SliverToBoxAdapter(
               child: Column(
                 children: [
+                  SizedBox(
+                    height: size.height * .02,
+                  ),
+
                   /// cart, orders, wishlist containers in one container
                   Container(
-                    height: 100,
+                    height: 100, // todo: set in ratio
                     width: size.width * .9,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(45),
+                      boxShadow: [
+                        const BoxShadow(
+                            color: Colors.white,
+                            offset: Offset(-1, -2),
+                            spreadRadius: 1),
+                        BoxShadow(
+                            color: Colors.grey.shade400,
+                            offset: Offset(1, 2),
+                            spreadRadius: .5)
+                      ],
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -187,35 +221,31 @@ class _ProfilePageState extends State<ProfilePage> {
                   const ProfileHeaderLabel(label: ' Account info '),
 
                   ///container for email, phone number, and address
-                  Container(
-                    height: size.height * .4,
-                    width: size.width * .9,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.black54),
-                    ),
-                    child: Column(
+                  ContainerForProfile(
+                    myChild: Column(
                       children: [
                         const RepeatedListTile(
                           leadingIcon: Icons.email_outlined,
                           title: 'Email Address',
                           subTitle: 'example@gmail.com',
                         ),
-                        YellowDivider(size: size),
+                        const RedDotRow(),
+                        // RedDivider(size: size),
                         const RepeatedListTile(
                           leadingIcon: Icons.phone_android_outlined,
                           title: 'Phone Number',
                           subTitle: '9810098100',
                         ),
-                        YellowDivider(size: size),
+                        const RedDotRow(),
+
+                        //RedDivider(size: size),
                         const RepeatedListTile(
                           leadingIcon: Icons.location_on_outlined,
                           title: 'Address',
                           subTitle:
                               'Ex: Kothi No D/60,\nKeshav Nagar, Numaish Camp, Saharanpur',
                         ),
-                        YellowDivider(size: size),
+                        RedDivider(size: size),
                       ],
                     ),
                   ),
@@ -224,15 +254,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   const ProfileHeaderLabel(label: ' Account settings '),
 
                   ///container for editing email, phone number, and address settings changed
-                  Container(
-                    height: size.height * .4,
-                    width: size.width * .9,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.black54),
-                    ),
-                    child: Column(
+                  ContainerForProfile(
+                    myChild: Column(
                       children: [
                         /// for editing profile
                         RepeatedListTile(
@@ -243,7 +266,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           title: 'Edit Profile',
                           subTitle: '',
                         ),
-                        YellowDivider(size: size),
+                        const RedDotRow(),
+                        // RedDivider(size: size),
 
                         /// for editing password
                         RepeatedListTile(
@@ -255,7 +279,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           title: 'Change password',
                           subTitle: '',
                         ),
-                        YellowDivider(size: size),
+                        const RedDotRow(),
+                        //RedDivider(size: size),
 
                         /// for loggingOut
                         RepeatedListTile(
@@ -266,9 +291,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           title: 'Log Out',
                           subTitle: '',
                         ),
-                        YellowDivider(size: size),
+                        // YellowDivider(size: size),
+                        RedDivider(size: size),
                       ],
                     ),
+                  ),
+                  const SizedBox(
+                    height: 15,
                   ),
                 ],
               ),
@@ -278,8 +307,71 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class YellowDivider extends StatelessWidget {
-  const YellowDivider({
+class ContainerForProfile extends StatelessWidget {
+  const ContainerForProfile({super.key, required this.myChild});
+  final Widget myChild;
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
+    return Container(
+        height: size.height * .42,
+        width: size.width * .9,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(12),
+          // border: Border.all(color: Colors.black54),
+          boxShadow: [
+            const BoxShadow(
+                color: Colors.white, offset: Offset(-1, -1), spreadRadius: 1),
+            BoxShadow(
+                color: Colors.grey.shade400,
+                offset: const Offset(1, 1),
+                spreadRadius: 1)
+          ],
+        ),
+        child: myChild);
+  }
+}
+
+class RedDotRow extends StatelessWidget {
+  const RedDotRow({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Container(
+          padding:
+              EdgeInsets.only(left: size.width * .15, right: size.width * .15),
+          width: size.width * .9,
+          height: size.height * .03,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: size.width * .75 ~/ 4,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 4.0,
+                  width: 4.0,
+                  margin: const EdgeInsets.symmetric(horizontal: 3),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.red,
+                  ),
+                );
+              }),
+        ),
+      ],
+    );
+  }
+}
+
+class RedDivider extends StatelessWidget {
+  const RedDivider({
     super.key,
     required this.size,
   });
@@ -289,8 +381,8 @@ class YellowDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Divider(
-      indent: size.width * .05,
-      endIndent: size.width * .05,
+      indent: size.width * .15,
+      endIndent: size.width * .15,
       thickness: 2,
       color: Colors.red.shade300,
     );
@@ -310,7 +402,7 @@ class ProfileHeaderLabel extends StatelessWidget {
             left: size.width * .05,
             right: size.width * .05,
             top: size.height * .03,
-            bottom: 4),
+            bottom: 8),
         child: Row(
           children: [
             const Expanded(
