@@ -87,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             spreadRadius: 1),
                         BoxShadow(
                             color: Colors.grey.shade400,
-                            offset: Offset(1, 2),
+                            offset: const Offset(1, 2),
                             spreadRadius: .5)
                       ],
                     ),

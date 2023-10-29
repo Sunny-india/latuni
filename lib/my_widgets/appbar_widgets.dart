@@ -36,7 +36,7 @@ class AppbarTitle extends StatelessWidget {
           fontFamily: 'Playpen',
           fontWeight: FontWeight.bold,
           fontStyle: FontStyle.italic,
-          fontSize: 28),
+          fontSize: 23),
     );
   }
 }

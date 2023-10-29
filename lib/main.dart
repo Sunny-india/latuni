@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:latuni/main_screens/customer_home_screen.dart';
+import 'package:latuni/main_screens/welcome_page.dart';
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: CustomerHomeScreen(),
+    home: WelcomePage(),
+
+    //SupplierHomePage(),
+
+    // CustomerHomeScreen(),
   ));
 }
