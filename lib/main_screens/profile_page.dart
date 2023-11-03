@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:latuni/main_screens/cart_page.dart';
+import 'package:latuni/my_widgets/appbar_widgets.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -109,7 +110,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               onPressed: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return const CartPage();
+                                  return const CartPage(
+                                    back: AppbarBackButton(),
+                                  );
                                 }));
                               },
                               child: const FittedBox(
@@ -130,10 +133,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             alignment: Alignment.center,
                             child: TextButton(
                               onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const CartPage();
-                                }));
+                                // Navigator.push(context,
+                                //     MaterialPageRoute(builder: (context) {
+                                //   return const CartPage();
+                                // }));
                               },
                               child: const FittedBox(
                                 child: Text(

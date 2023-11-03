@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:latuni/main_screens/customer_home_screen.dart';
+import 'package:latuni/main_screens/welcome_page.dart';
 import 'package:latuni/my_widgets/appbar_widgets.dart';
 import 'package:latuni/my_widgets/decorated_container.dart';
 
 class CartPage extends StatefulWidget {
-  const CartPage({super.key});
-
+  const CartPage({super.key, this.back});
+  final Widget? back;
   @override
   State<CartPage> createState() => _CartPageState();
 }
@@ -19,6 +20,7 @@ class _CartPageState extends State<CartPage> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
+        leading: widget.back,
         title: const AppbarTitle(
           title: 'Cart',
         ),
@@ -59,10 +61,12 @@ class _CartPageState extends State<CartPage> {
                       borderRadius: BorderRadius.circular(14)),
                   onPressed: () {
                     //  Navigator.pop(context);
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const CustomerHomeScreen();
-                    }));
+                    Navigator.canPop(context)
+                        ? Navigator.pop(context)
+                        : Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                            return const CustomerHomeScreen();
+                          }));
                   },
                   child: const Text(
                     'Continue Shopping',
@@ -89,20 +93,15 @@ class _CartPageState extends State<CartPage> {
                 ),
               ],
             ),
-            Container(
-              width: size.width * .4,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.yellow,
-                  borderRadius: BorderRadius.circular(16)),
-              child: MaterialButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {},
-                child: const Text('CHECK OUT'),
-              ),
-            ),
+            MyButton(
+                mWidth: size.width * .5,
+                // backgroundColor: backgroundColor,
+
+                title: const Text(
+                  'CHECK-OUT',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onTapped: () {}),
           ],
         ),
       ),

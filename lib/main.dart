@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:latuni/main_screens/welcome_page.dart';
+
+import 'main_screens/welcome_page.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
     home: WelcomePage(),
 
