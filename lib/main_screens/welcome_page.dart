@@ -9,7 +9,7 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  final Color backgroundColor = Colors.grey.shade100;
+  final Color backgroundColor = Colors.grey.shade300;
 
   bool doItClicked = false;
   bool signUpClicked = false;
@@ -26,77 +26,142 @@ class _WelcomePageState extends State<WelcomePage> {
     });
   }
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: Column(
-          //  mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            /// login text
-            ClipPath(
-              clipper: ParchiBottom(),
-              child: Container(
-                alignment: Alignment.center,
-                height: 200,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: size.width * .04),
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            //crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(
+                height: size.height * .08,
+              ),
+
+              /// WELCOME text
+              ClipPath(
+                clipper: ParchiBottom(),
+                child: welcomeTextContainer(size),
+              ),
+              const SizedBox(height: 20),
+
+              /// Suppliers login/signup
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                height: size.height * .1,
                 width: size.width * .9,
-                color: Colors.orange,
-                child: const Text(
-                  'W E L C O M E',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 30),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(21),
+                    color: Colors.orange),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Text('S U P P L I E R S'),
+                    const SizedBox(width: 10),
+                    MyButton(
+                        mWidth: size.width * .2,
+                        title: const Text('LOGIN'),
+                        onTapped: () {}),
+                    const SizedBox(width: 10),
+                    MyButton(
+                        mWidth: size.width * .2,
+                        title: const Text('SIGN UP'),
+                        onTapped: () {}),
+                  ],
                 ),
               ),
-            ),
 
-            /// email tff
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'email',
+              const SizedBox(height: 20),
+
+              /// customers login/signup
+
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                height: size.height * .1,
+                width: size.width * .9,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(21),
+                    color: Colors.orange),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const RotatedBox(
+                        quarterTurns: 2, child: Text('C U S T O M E R S')),
+                    const SizedBox(width: 10),
+                    MyButton(
+                        mWidth: size.width * .2,
+                        title: const Text('LOGIN'),
+                        onTapped: () {}),
+                    const SizedBox(width: 10),
+                    MyButton(
+                        mWidth: size.width * .2,
+                        title: const Text('SIGN UP'),
+                        onTapped: () {}),
+                  ],
+                ),
               ),
-              controller: emailController,
-            ),
-            SizedBox(height: size.height * .05),
 
-            /// phone tff
-            TextFormField(),
-            SizedBox(height: size.height * .05),
-
-            /// password tff
-            TextFormField(),
-            SizedBox(height: size.height * .05),
-            // MyButton(
-            //     onTapped: doItTapped,
-            //     clickedOrNot: doItClicked,
-            //     title: const Row(
-            //       children: [
-            //         Text('D O  I T',
-            //             style: TextStyle(
-            //                 fontSize: 12,
-            //                 fontWeight: FontWeight.bold,
-            //                 fontFamily: 'Playpen',
-            //                 fontStyle: FontStyle.italic)),
-            //       ],
-            //     ),
-            //     backgroundColor: backgroundColor),
-            // const SizedBox(height: 40),
-            // MyButton(
-            //     backgroundColor: backgroundColor,
-            //     clickedOrNot: signUpClicked,
-            //     title: const Text('S I G N U P',
-            //         style: TextStyle(
-            //             fontSize: 40,
-            //             fontWeight: FontWeight.bold,
-            //             fontFamily: 'Playpen',
-            //             fontStyle: FontStyle.italic)),
-            //     onTapped: signUpTapped),
-          ],
+              // MyButton(
+              //     onTapped: doItTapped,
+              //     clickedOrNot: doItClicked,
+              //     title: const Row(
+              //       children: [
+              //         Text('D O  I T',
+              //             style: TextStyle(
+              //                 fontSize: 12,
+              //                 fontWeight: FontWeight.bold,
+              //                 fontFamily: 'Playpen',
+              //                 fontStyle: FontStyle.italic)),
+              //       ],
+              //     ),
+              //     backgroundColor: backgroundColor),
+              // const SizedBox(height: 40),
+              // MyButton(
+              //     backgroundColor: backgroundColor,
+              //     clickedOrNot: signUpClicked,
+              //     title: const Text('S I G N U P',
+              //         style: TextStyle(
+              //             fontSize: 40,
+              //             fontWeight: FontWeight.bold,
+              //             fontFamily: 'Playpen',
+              //             fontStyle: FontStyle.italic)),
+              //     onTapped: signUpTapped),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Container welcomeTextContainer(Size size) {
+    return Container(
+      alignment: Alignment.center,
+      height: 200,
+      width: size.width * .9,
+      decoration: BoxDecoration(
+        color: Colors.orange.shade600,
+        //  border: Border.all(color: Colors.black),
+        // boxShadow: [
+        //   BoxShadow(
+        //       color: Colors.orange.shade100,
+        //       offset: const Offset(-14, -14),
+        //       blurRadius: 4,
+        //       spreadRadius: 14),
+        //   BoxShadow(
+        //       color: Colors.orange.shade900,
+        //       offset: const Offset(14, 14),
+        //       blurRadius: 4,
+        //       spreadRadius: 14),
+        // ],
+      ),
+      child: const Text(
+        'W E L C O M E',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 30),
       ),
     );
   }
@@ -264,11 +329,11 @@ class ParchiBottom extends CustomClipper<Path> {
     path.lineTo(size.width * .99, size.height * .95);
     path.lineTo(size.width, size.height);
     //zigzag ends here
-    path.lineTo(size.width, size.height);
-    path.lineTo(size.width, size.height * .80);
-    path.quadraticBezierTo(size.width, 0, size.width * .8, 0);
+    // path.lineTo(size.width, size.height);
+    path.lineTo(size.width, size.height * .20);
+    path.quadraticBezierTo(size.width, 0, size.width * .9, 0);
 
-    path.lineTo(size.width * .1, 0);
+    // path.lineTo(size.width * .1, 0);
     return path;
   }
 
