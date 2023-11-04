@@ -4,6 +4,8 @@ import 'package:latuni/main_screens/welcome_page.dart';
 import 'package:latuni/my_widgets/appbar_widgets.dart';
 import 'package:latuni/my_widgets/decorated_container.dart';
 
+import '../my_widgets/my_button.dart';
+
 class CartPage extends StatefulWidget {
   const CartPage({super.key, this.back});
   final Widget? back;
