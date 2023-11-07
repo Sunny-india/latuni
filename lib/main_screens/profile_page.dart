@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:latuni/main_screens/cart_page.dart';
+import 'package:latuni/main_screens/welcome_page.dart';
 import 'package:latuni/my_widgets/appbar_widgets.dart';
+
+import '../customer_screens/customer_order_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -11,6 +14,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  void logOut() {
+    Navigator.pushReplacementNamed(context, WelcomePage.pageName);
+  }
+
+  void goToCustomerOrderPage() {
+    Navigator.pushNamed(context, CustomerOrderPage.pageName);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
@@ -132,12 +143,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             alignment: Alignment.center,
                             child: TextButton(
-                              onPressed: () {
-                                // Navigator.push(context,
-                                //     MaterialPageRoute(builder: (context) {
-                                //   return const CartPage();
-                                // }));
-                              },
+                              onPressed: goToCustomerOrderPage,
+
+                              //() {
+                              // Navigator.push(context,
+                              //     MaterialPageRoute(builder: (context) {
+                              //   return const CartPage();
+                              // }));
+                              //   },
                               child: const FittedBox(
                                 child: Text(
                                   'ORDERS',
@@ -287,9 +300,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
                         /// for loggingOut
                         RepeatedListTile(
-                          onPressed: () {
-                            // todo: on tapping edit address from here to database
-                          },
+                          // todo: for logout from database
+
+                          onPressed: logOut,
+
                           leadingIcon: Icons.logout,
                           title: 'Log Out',
                           subTitle: '',

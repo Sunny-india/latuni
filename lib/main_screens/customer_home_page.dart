@@ -7,14 +7,14 @@ import '../my_widgets/decorated_container.dart';
 import 'cart_page.dart';
 import 'home.dart';
 
-class CustomerHomeScreen extends StatefulWidget {
-  const CustomerHomeScreen({super.key});
-
+class CustomerHomePage extends StatefulWidget {
+  const CustomerHomePage({super.key});
+  static String pageName = '/customer_home_page';
   @override
-  State<CustomerHomeScreen> createState() => _CustomerHomeScreenState();
+  State<CustomerHomePage> createState() => _CustomerHomePageState();
 }
 
-class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
+class _CustomerHomePageState extends State<CustomerHomePage> {
   int _selectedIndex = 0;
 
   List<Widget> pages = [

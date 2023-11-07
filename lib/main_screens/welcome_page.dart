@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:latuni/main_screens/customer_home_page.dart';
+import 'package:latuni/main_screens/supplier_home_page.dart';
 
 import '../my_widgets/my_button.dart';
 import '../utilities/clippers.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
-
+  static String pageName = '/welcome_page';
   @override
   State<WelcomePage> createState() => _WelcomePageState();
 }
@@ -27,6 +29,11 @@ class _WelcomePageState extends State<WelcomePage> {
         'label': 'Google',
         'onPressed': googleLogin
       },
+      {
+        'image': 'assets/images/logos/person.png',
+        'label': 'Anon',
+        'onPressed': anonymousLogin
+      },
     ];
 
     super.initState();
@@ -38,6 +45,10 @@ class _WelcomePageState extends State<WelcomePage> {
 
   void googleLogin() {
     print('Google');
+  }
+
+  void anonymousLogin() {
+    print('Anonymous Login');
   }
 
   @override
@@ -66,61 +77,61 @@ class _WelcomePageState extends State<WelcomePage> {
                     const SizedBox(height: 20),
 
                     /// Suppliers login/signup
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      height: size.height * .1,
-                      width: size.width * .9,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(21),
-                          color: Colors.orange),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Text('S U P P L I E R S'),
-                          const SizedBox(width: 10),
-                          MyButton(
-                              mWidth: size.width * .2,
-                              title: const Text('LOGIN'),
-                              onTapped: () {}),
-                          const SizedBox(width: 10),
-                          MyButton(
-                              mWidth: size.width * .2,
-                              title: const Text('SIGN UP'),
-                              onTapped: () {}),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    /// customers login/signup
-
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      height: size.height * .1,
-                      width: size.width * .9,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(21),
-                          color: Colors.orange),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const RotatedBox(
-                              quarterTurns: 2,
-                              child: Text('C U S T O M E R S')),
-                          const SizedBox(width: 10),
-                          MyButton(
-                              mWidth: size.width * .2,
-                              title: const Text('LOGIN'),
-                              onTapped: () {}),
-                          const SizedBox(width: 10),
-                          MyButton(
-                              mWidth: size.width * .2,
-                              title: const Text('SIGN UP'),
-                              onTapped: () {}),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 6),
+                    //   height: size.height * .1,
+                    //   width: size.width * .9,
+                    //   decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(21),
+                    //       color: Colors.orange),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //     children: [
+                    //       const Text('S U P P L I E R S'),
+                    //       const SizedBox(width: 10),
+                    //       MyButton(
+                    //           mWidth: size.width * .2,
+                    //           title: const Text('LOGIN'),
+                    //           onTapped: () {}),
+                    //       const SizedBox(width: 10),
+                    //       MyButton(
+                    //           mWidth: size.width * .2,
+                    //           title: const Text('SIGN UP'),
+                    //           onTapped: () {}),
+                    //     ],
+                    //   ),
+                    // ),
+                    //
+                    // const SizedBox(height: 20),
+                    //
+                    // /// customers login/signup
+                    //
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 6),
+                    //   height: size.height * .1,
+                    //   width: size.width * .9,
+                    //   decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(21),
+                    //       color: Colors.orange),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //     children: [
+                    //       const RotatedBox(
+                    //           quarterTurns: 2,
+                    //           child: Text('C U S T O M E R S')),
+                    //       const SizedBox(width: 10),
+                    //       MyButton(
+                    //           mWidth: size.width * .2,
+                    //           title: const Text('LOGIN'),
+                    //           onTapped: () {}),
+                    //       const SizedBox(width: 10),
+                    //       MyButton(
+                    //           mWidth: size.width * .2,
+                    //           title: const Text('SIGN UP'),
+                    //           onTapped: () {}),
+                    //     ],
+                    //   ),
+                    // ),
 
                     /// alternate design
                     const SizedBox(height: 10),
@@ -152,7 +163,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 height: size.height * .04,
               ),
 
-              /// bottom Row for social sign ins
+              /// bottom Row for social sign-ins
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Row(
@@ -189,6 +200,54 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 }
 
+class LeftSupplierContainer extends StatelessWidget {
+  const LeftSupplierContainer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.deepPurple,
+      ),
+      child: FittedBox(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const SizedBox(height: 12),
+            const RotatedBox(
+              quarterTurns: 3,
+              child: Text(
+                'S U P P L I E R S',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 10),
+            MyButton(
+                mWidth: size.width * .35,
+                title: const Text('Login'),
+                onTapped: () {
+                  //todo:for supplier login
+                  Navigator.pushReplacementNamed(
+                      context, SupplierHomePage.pageName);
+                }),
+            const SizedBox(height: 20),
+            MyButton(
+                mWidth: size.width * .35,
+                title: const Text('Sign Up'),
+                onTapped: () {
+                  //todo: Sign Up later
+                }),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class RightCustomerContainer extends StatelessWidget {
   const RightCustomerContainer({
     super.key,
@@ -220,10 +279,12 @@ class RightCustomerContainer extends StatelessWidget {
                 mWidth: size.width * .35,
                 title: const Text('Login'),
                 onTapped: () {
-                  //todo: login later
+                  //todo:for customers login later
+                  Navigator.pushReplacementNamed(
+                      context, CustomerHomePage.pageName);
                 }),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             MyButton(
                 mWidth: size.width * .35,
@@ -231,61 +292,7 @@ class RightCustomerContainer extends StatelessWidget {
                 onTapped: () {
                   //todo: Sign Up later
                 }),
-            const SizedBox(
-              height: 10,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class LeftSupplierContainer extends StatelessWidget {
-  const LeftSupplierContainer({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.sizeOf(context);
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.deepPurple,
-      ),
-      child: FittedBox(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const SizedBox(height: 12),
-            const RotatedBox(
-              quarterTurns: 3,
-              child: Text(
-                'S U P P L I E R S',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            MyButton(
-                mWidth: size.width * .35,
-                title: const Text('Login'),
-                onTapped: () {
-                  //todo: login later
-                }),
-            const SizedBox(
-              height: 10,
-            ),
-            MyButton(
-                mWidth: size.width * .35,
-                title: const Text('Sign Up'),
-                onTapped: () {
-                  //todo: Sign Up later
-                }),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
@@ -308,14 +315,14 @@ class BottomSocialWidgets extends StatelessWidget {
       onTap: onPressed,
       child: SizedBox(
         width: 70,
-        height: 60,
+        height: 90,
         //  decoration: const BoxDecoration(color: Colors.deepPurple),
         child: FittedBox(
           child: Column(
             children: [
               Image.asset(
                 image,
-                height: 50,
+                height: 60,
               ),
               Text(label),
             ],

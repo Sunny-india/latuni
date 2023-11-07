@@ -8,7 +8,7 @@ import 'home.dart';
 
 class SupplierHomePage extends StatefulWidget {
   const SupplierHomePage({super.key});
-
+  static String pageName = '/supplier_home_page';
   @override
   State<SupplierHomePage> createState() => _SupplierHomePageState();
 }
@@ -20,7 +20,7 @@ class _SupplierHomePageState extends State<SupplierHomePage> {
     const HomePage(),
     const CategoryPage(),
     const StoresPage(),
-    Dashboard(),
+    const DashboardPage(),
     const Center(
       child: Text('Upload One'),
     ),

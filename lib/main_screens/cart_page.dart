@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:latuni/main_screens/customer_home_screen.dart';
-import 'package:latuni/main_screens/welcome_page.dart';
+import 'package:latuni/customer_screens/customer_order_page.dart';
+import 'package:latuni/main_screens/customer_home_page.dart';
 import 'package:latuni/my_widgets/appbar_widgets.dart';
 import 'package:latuni/my_widgets/decorated_container.dart';
 
@@ -67,7 +67,7 @@ class _CartPageState extends State<CartPage> {
                         ? Navigator.pop(context)
                         : Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) {
-                            return const CustomerHomeScreen();
+                            return const CustomerHomePage();
                           }));
                   },
                   child: const Text(
