@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:latuni/agent_screens/agent_login_page.dart';
 import 'package:latuni/main_screens/customer_home_page.dart';
 import 'package:latuni/main_screens/supplier_home_page.dart';
 
@@ -55,7 +56,7 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -76,86 +77,38 @@ class _WelcomePageState extends State<WelcomePage> {
                     ),
                     const SizedBox(height: 20),
 
-                    /// Suppliers login/signup
-                    // Container(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 6),
-                    //   height: size.height * .1,
-                    //   width: size.width * .9,
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(21),
-                    //       color: Colors.orange),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //     children: [
-                    //       const Text('S U P P L I E R S'),
-                    //       const SizedBox(width: 10),
-                    //       MyButton(
-                    //           mWidth: size.width * .2,
-                    //           title: const Text('LOGIN'),
-                    //           onTapped: () {}),
-                    //       const SizedBox(width: 10),
-                    //       MyButton(
-                    //           mWidth: size.width * .2,
-                    //           title: const Text('SIGN UP'),
-                    //           onTapped: () {}),
-                    //     ],
-                    //   ),
-                    // ),
-                    //
-                    // const SizedBox(height: 20),
-                    //
-                    // /// customers login/signup
-                    //
-                    // Container(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 6),
-                    //   height: size.height * .1,
-                    //   width: size.width * .9,
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(21),
-                    //       color: Colors.orange),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //     children: [
-                    //       const RotatedBox(
-                    //           quarterTurns: 2,
-                    //           child: Text('C U S T O M E R S')),
-                    //       const SizedBox(width: 10),
-                    //       MyButton(
-                    //           mWidth: size.width * .2,
-                    //           title: const Text('LOGIN'),
-                    //           onTapped: () {}),
-                    //       const SizedBox(width: 10),
-                    //       MyButton(
-                    //           mWidth: size.width * .2,
-                    //           title: const Text('SIGN UP'),
-                    //           onTapped: () {}),
-                    //     ],
-                    //   ),
-                    // ),
+                    /// Suppliers and customers login / signup
+                    SupplierCustomerLoginSignUp(size: size),
+                    const SizedBox(height: 50),
 
-                    /// alternate design
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      height: size.height * .35,
-                      width: size.width * .9,
+                    /// agents login signup
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      height: size.height * .1,
+                      // width: size.width * .9,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(21),
+                          color: Colors.orange),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Expanded(
-                            child: ClipPath(
-                              clipper: RightClipper(),
-                              child: const LeftSupplierContainer(),
-                            ),
-                          ),
-                          Expanded(
-                            child: ClipPath(
-                              clipper: LeftClipper(),
-                              child: const RightCustomerContainer(),
-                            ),
-                          )
+                          const Text('A G E N T S'),
+                          const SizedBox(width: 10),
+                          MyButton(
+                              mWidth: size.width * .2,
+                              title: const Text('LOGIN'),
+                              onTapped: () {
+                                Navigator.pushNamed(
+                                    context, AgentLoginPage.pageName);
+                              }),
+                          const SizedBox(width: 10),
+                          MyButton(
+                              mWidth: size.width * .2,
+                              title: const Text('SIGN UP'),
+                              onTapped: () {}),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 80),
                   ],
                 ),
               ),
@@ -186,15 +139,60 @@ class _WelcomePageState extends State<WelcomePage> {
   Container welcomeTextContainer(Size size) {
     return Container(
       alignment: Alignment.center,
-      height: 200,
-      width: size.width * .9,
+      height: size.height * .22,
+      //width: size.width * .9,
       decoration: BoxDecoration(
-        color: Colors.orange.shade600,
+        gradient: LinearGradient(
+          colors: [
+            Colors.black26,
+            Colors.deepPurple.shade400,
+            Colors.deepPurple.shade500,
+            Colors.deepPurple.shade600,
+            Colors.deepPurple.shade800,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: const [.2, .4, .6, .8, 1],
+        ),
       ),
       child: const Text(
         'W E L C O M E',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 30),
+        style:
+            TextStyle(fontSize: 30, color: Colors.white, fontFamily: 'Playpen'),
+      ),
+    );
+  }
+}
+
+class SupplierCustomerLoginSignUp extends StatelessWidget {
+  const SupplierCustomerLoginSignUp({
+    super.key,
+    required this.size,
+  });
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: size.height * .35,
+      // width: size.width * .9,
+      child: Row(
+        children: [
+          Expanded(
+            child: ClipPath(
+              clipper: RightClipper(),
+              child: const LeftSupplierContainer(),
+            ),
+          ),
+          Expanded(
+            child: ClipPath(
+              clipper: LeftClipper(),
+              child: const RightCustomerContainer(),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -209,8 +207,19 @@ class LeftSupplierContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.deepPurple,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.black26,
+            Colors.deepPurple.shade400,
+            Colors.deepPurple.shade500,
+            Colors.deepPurple.shade600,
+            Colors.deepPurple.shade800,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: const [.05, .4, .6, .8, 1],
+        ),
       ),
       child: FittedBox(
         child: Column(
@@ -257,8 +266,19 @@ class RightCustomerContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.deepPurple,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.black26,
+            Colors.deepPurple.shade400,
+            Colors.deepPurple.shade500,
+            Colors.deepPurple.shade600,
+            Colors.deepPurple.shade800,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: const [.01, .4, .6, .8, 1],
+        ),
       ),
       child: FittedBox(
         child: Column(
