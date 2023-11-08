@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:latuni/agent_screens/agent_login_page.dart';
+import 'package:latuni/auth/customer_auth/customer_register_page.dart';
 import 'package:latuni/main_screens/customer_home_page.dart';
 import 'package:latuni/main_screens/supplier_home_page.dart';
 
 import '../my_widgets/my_button.dart';
 import '../utilities/clippers.dart';
+
+BoxDecoration buildBoxDecoration() {
+  return BoxDecoration(
+    gradient: LinearGradient(
+      colors: [
+        Colors.deepOrange.shade200,
+        Colors.deepOrange.shade400,
+        Colors.deepOrange.shade500,
+        Colors.deepOrange.shade600,
+        Colors.deepOrange.shade800,
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      stops: const [.1, .4, .6, .8, 1],
+    ),
+  );
+}
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -22,7 +40,7 @@ class _WelcomePageState extends State<WelcomePage> {
     socialMediaList = [
       {
         'image': 'assets/images/logos/fb.png',
-        'label': 'FaceBook',
+        'label': 'Fb',
         'onPressed': faceBookLogin
       },
       {
@@ -59,16 +77,16 @@ class _WelcomePageState extends State<WelcomePage> {
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                margin: EdgeInsets.only(
-                  top: 20,
-                  left: size.width * .04,
-                  right: size.width * .04,
-                ),
-                child: Column(
+          child: Padding(
+            padding: EdgeInsets.only(
+                left: size.width * .05,
+                right: size.width * .05,
+                top: size.height * .05,
+                bottom: 6),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
                   children: [
                     /// WELCOME text
                     ClipPath(
@@ -86,9 +104,10 @@ class _WelcomePageState extends State<WelcomePage> {
                       padding: const EdgeInsets.symmetric(horizontal: 6),
                       height: size.height * .1,
                       // width: size.width * .9,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(21),
-                          color: Colors.orange),
+                      decoration: buildBoxDecoration().copyWith(
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(21),
+                              bottomRight: Radius.circular(21))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -111,24 +130,19 @@ class _WelcomePageState extends State<WelcomePage> {
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: size.height * .04,
-              ),
+                SizedBox(height: size.height * .04),
 
-              /// bottom Row for social sign-ins
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                /// bottom Row for social sign-ins
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: List.generate(socialMediaList.length, (index) {
                       return BottomSocialWidgets(
                           onPressed: socialMediaList[index]['onPressed'],
                           image: socialMediaList[index]['image'],
                           label: socialMediaList[index]['label']);
                     })),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         // bottom: true,
@@ -141,20 +155,7 @@ class _WelcomePageState extends State<WelcomePage> {
       alignment: Alignment.center,
       height: size.height * .22,
       //width: size.width * .9,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.black26,
-            Colors.deepPurple.shade400,
-            Colors.deepPurple.shade500,
-            Colors.deepPurple.shade600,
-            Colors.deepPurple.shade800,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          stops: const [.2, .4, .6, .8, 1],
-        ),
-      ),
+      decoration: buildBoxDecoration(),
       child: const Text(
         'W E L C O M E',
         textAlign: TextAlign.center,
@@ -207,20 +208,7 @@ class LeftSupplierContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.black26,
-            Colors.deepPurple.shade400,
-            Colors.deepPurple.shade500,
-            Colors.deepPurple.shade600,
-            Colors.deepPurple.shade800,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          stops: const [.05, .4, .6, .8, 1],
-        ),
-      ),
+      decoration: buildBoxDecoration(),
       child: FittedBox(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -266,20 +254,7 @@ class RightCustomerContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.black26,
-            Colors.deepPurple.shade400,
-            Colors.deepPurple.shade500,
-            Colors.deepPurple.shade600,
-            Colors.deepPurple.shade800,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          stops: const [.01, .4, .6, .8, 1],
-        ),
-      ),
+      decoration: buildBoxDecoration(),
       child: FittedBox(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -311,6 +286,8 @@ class RightCustomerContainer extends StatelessWidget {
                 title: const Text('Sign Up'),
                 onTapped: () {
                   //todo: Sign Up later
+                  Navigator.pushReplacementNamed(
+                      context, CustomerRegisterPage.pageName);
                 }),
             const SizedBox(height: 10),
           ],

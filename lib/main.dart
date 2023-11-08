@@ -12,22 +12,27 @@ import 'package:latuni/main_screens/customer_home_page.dart';
 import 'package:latuni/main_screens/dashboard.dart';
 import 'package:latuni/main_screens/supplier_home_page.dart';
 
+import 'auth/customer_auth/customer_register_page.dart';
 import 'main_screens/welcome_page.dart';
 
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    //home: const WelcomePage(),
+    theme: ThemeData(
+      scaffoldBackgroundColor: Colors.grey.shade300,
+    ),
     initialRoute: '/',
     routes: {
       '/': (context) => const WelcomePage(),
       WelcomePage.pageName: (context) => const WelcomePage(),
-      //  customers pages start here
+
+      ///  customers pages start here
+      CustomerRegisterPage.pageName: (context) => const CustomerRegisterPage(),
       CustomerHomePage.pageName: (context) => const CustomerHomePage(),
       CustomerOrderPage.pageName: (context) => const CustomerOrderPage(),
       WishlistPage.pageName: (context) => const WishlistPage(),
 
-      // suppliers pages start here
+      /// suppliers pages start here
       SupplierHomePage.pageName: (context) => const SupplierHomePage(),
       DashboardPage.pageName: (context) => const DashboardPage(),
       MyStorePage.pageName: (context) => const MyStorePage(),
@@ -37,7 +42,7 @@ void main() {
       SupplierBalancePage.pageName: (context) => const SupplierBalancePage(),
       SupplierStaticsPage.pageName: (context) => const SupplierStaticsPage(),
 
-      // agent pages start here
+      /// agent pages start here
       AgentLoginPage.pageName: (context) => const AgentLoginPage(),
     },
   ));

@@ -241,62 +241,63 @@ class _AgentLoginPageState extends State<AgentLoginPage> {
       ),
     );
   }
+}
 
-  Container buildContainerForTFF({required Widget myChild}) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.shade500,
-              offset: const Offset(4, 4),
-              blurRadius: 2,
-              spreadRadius: 1),
-          const BoxShadow(
-              color: Colors.white,
-              offset: Offset(-4, -4),
-              blurRadius: 2,
-              spreadRadius: 1),
-        ],
-        gradient: LinearGradient(
-            colors: [
-              Colors.grey.shade200,
-              Colors.grey.shade300,
-              Colors.grey.shade400,
-              Colors.grey.shade600
-            ],
-            // begin: Alignment.topLeft,
-            //end: Alignment.bottomRight,
-            stops: const [
-              0.2,
-              0.4,
-              0.7,
-              0.9
-            ]),
-      ),
-      child: myChild,
-    );
-  }
+Container buildContainerForTFF({required Widget myChild}) {
+  return Container(
+    //height: 100,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: [
+        BoxShadow(
+            color: Colors.grey.shade500,
+            offset: const Offset(4, 4),
+            blurRadius: 2,
+            spreadRadius: 1),
+        const BoxShadow(
+            color: Colors.white,
+            offset: Offset(-4, -4),
+            blurRadius: 2,
+            spreadRadius: 1),
+      ],
+      gradient: LinearGradient(
+          colors: [
+            Colors.grey.shade200,
+            Colors.grey.shade300,
+            Colors.grey.shade400,
+            Colors.grey.shade600
+          ],
+          // begin: Alignment.topLeft,
+          //end: Alignment.bottomRight,
+          stops: const [
+            0.2,
+            0.4,
+            0.7,
+            0.9
+          ]),
+    ),
+    child: myChild,
+  );
+}
 
-  InputDecoration buildInputDecoration() {
-    return InputDecoration(
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.grey.shade300),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.lightBlueAccent),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.red),
-      ),
+InputDecoration buildInputDecoration() {
+  return InputDecoration(
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Colors.grey.shade300),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Colors.lightBlueAccent),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Colors.red),
+    ),
 
-      // fillColor: Colors.grey.shade300,
-      //filled: true,
-    );
-  }
+    // fillColor: Colors.grey.shade300,
+    //filled: true,
+  );
 }
 
 extension ValidName on String {
@@ -310,5 +311,11 @@ extension ValidEmail on String {
     return RegExp(
             r"^[a-zA-Z0-9]+[_\-.]*[a-zA-Z0-9]*@[a-zA-Z]{2,}[.][a-zA-Z]{2,5}$")
         .hasMatch(this);
+  }
+}
+
+extension ValidPhone on String {
+  bool isValidPhone() {
+    return RegExp(r'^[6-9]{1}[0-9]{9}$').hasMatch(this);
   }
 }
