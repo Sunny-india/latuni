@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latuni/customer_screens/customer_order_page.dart';
+import 'package:latuni/customer_screens/wishlist_page.dart';
 import 'package:latuni/dashboard_components/edit_business_page.dart';
 import 'package:latuni/dashboard_components/manage_products_page.dart';
 import 'package:latuni/dashboard_components/my_store.dart';
@@ -23,7 +24,7 @@ void main() {
       //  customers pages start here
       CustomerHomePage.pageName: (context) => const CustomerHomePage(),
       CustomerOrderPage.pageName: (context) => const CustomerOrderPage(),
-
+      WishlistPage.pageName: (context) => const WishlistPage(),
       // suppliers pages start here
       SupplierHomePage.pageName: (context) => const SupplierHomePage(),
       DashboardPage.pageName: (context) => const DashboardPage(),

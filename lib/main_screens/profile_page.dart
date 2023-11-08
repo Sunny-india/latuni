@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:latuni/main_screens/cart_page.dart';
 import 'package:latuni/main_screens/welcome_page.dart';
 import 'package:latuni/my_widgets/appbar_widgets.dart';
+import 'package:latuni/utilities/clippers.dart';
 
 import '../customer_screens/customer_order_page.dart';
+import '../customer_screens/wishlist_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -20,6 +22,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void goToCustomerOrderPage() {
     Navigator.pushNamed(context, CustomerOrderPage.pageName);
+  }
+
+  void goToWishlistPage() {
+    Navigator.pushNamed(context, WishlistPage.pageName);
   }
 
   @override
@@ -144,13 +150,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             alignment: Alignment.center,
                             child: TextButton(
                               onPressed: goToCustomerOrderPage,
-
-                              //() {
-                              // Navigator.push(context,
-                              //     MaterialPageRoute(builder: (context) {
-                              //   return const CartPage();
-                              // }));
-                              //   },
                               child: const FittedBox(
                                 child: Text(
                                   'ORDERS',
@@ -162,40 +161,32 @@ class _ProfilePageState extends State<ProfilePage> {
 
                         /// wishlist container
                         Container(
-                            height: 80,
-                            width: size.width * .2,
-                            decoration: const BoxDecoration(
-                              color: Colors.black54,
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(50),
-                                  bottomRight: Radius.circular(50)),
-                            ),
-                            alignment: Alignment.center,
-                            child: TextButton(
-                              onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) {
-                                //       return const CartPage();
-                                //     },
-                                //   ),
-                                // );
-                              },
-                              child: const FittedBox(
-                                child: Text(
-                                  'WishList',
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                          height: 80,
+                          width: size.width * .2,
+                          decoration: const BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(50),
+                                bottomRight: Radius.circular(50)),
+                          ),
+                          alignment: Alignment.center,
+                          child: TextButton(
+                            onPressed: goToWishlistPage,
+                            child: const FittedBox(
+                              child: Text(
+                                'WishList',
+                                style: TextStyle(color: Colors.white),
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   SizedBox(height: size.height * .03),
 
                   /// image container
-                  //todo: to be changed later by actual logo
+                  /// todo: to be changed later by actual logo
                   // LayoutBuilder(
                   //   builder: (context, constraints) {
                   //     if (constraints.maxWidth > 600) {
@@ -218,17 +209,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   //     }
                   //   },
                   // ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(18),
+                  ClipPath(
+                    clipper: ParchiBottom(),
                     child: Container(
-                      height: size.height * .2,
+                      height: size.height * .25,
                       width: size.width * .9,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Image.asset(
-                        'assets/images/rubber_bands/disco/DISCO_3.JPG',
-                        fit: BoxFit.cover,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/rubber_bands/disco/DISCO_3.JPG',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -372,8 +364,8 @@ class RedDotRow extends StatelessWidget {
               itemCount: size.width * .75 ~/ 4,
               itemBuilder: (context, index) {
                 return Container(
-                  height: 4.0,
-                  width: 4.0,
+                  height: 5.0,
+                  width: 5.0,
                   margin: const EdgeInsets.symmetric(horizontal: 3),
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
