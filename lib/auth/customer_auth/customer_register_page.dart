@@ -3,6 +3,7 @@ import 'package:latuni/agent_screens/agent_login_page.dart';
 import 'package:latuni/my_widgets/my_button.dart';
 
 import '../../main_screens/welcome_page.dart';
+import '../../my_widgets/auth_widgets.dart';
 
 class CustomerRegisterPage extends StatefulWidget {
   const CustomerRegisterPage({super.key});
@@ -46,7 +47,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                   myLogo(size),
 
                   /// sign up text
-                  mySignUpText(),
+                  const AuthHeaderLabel(labelText: 'S I G N U P'),
                   const SizedBox(height: 40),
 
                   /// name TFF
@@ -73,8 +74,14 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                   cityTFF(),
                   const SizedBox(height: 10),
 
-                  ///  have an account or not TextButton in Row
-                  haveAccountOrNot(),
+                  ///  have an account or not
+                  HaveAccountOrNot(
+                    account: 'Already Have an Account?',
+                    buttonLabel: 'Login',
+                    onPressed: () {
+                      // todo: later to be sent to login page
+                    },
+                  ),
                   const SizedBox(height: 20),
 
                   /// after all validations button to register
@@ -82,7 +89,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                   const SizedBox(height: 8),
 
                   /// go back button
-                  goBackTextButton(context),
+                  //goBackTextButton(context),
                   const SizedBox(height: 20),
                 ],
               ),
@@ -100,13 +107,6 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         'assets/images/logos/rose.png',
         fit: BoxFit.cover,
       ),
-    );
-  }
-
-  Text mySignUpText() {
-    return const Text(
-      'S I G N U P',
-      style: TextStyle(fontFamily: 'Playpen', fontSize: 20),
     );
   }
 
@@ -273,26 +273,6 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
     );
   }
 
-  Row haveAccountOrNot() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        const Text('Already Have an Account?'),
-        TextButton(
-          onPressed: () {},
-          child: Text(
-            'Login',
-            style: TextStyle(
-                color: Colors.pink.shade300,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Playpen'),
-          ),
-        )
-      ],
-    );
-  }
-
   MyButton buttonForRegistration(Size size) {
     return MyButton(
         mWidth: double.infinity,
@@ -306,26 +286,5 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           ),
         ),
         onTapped: () {});
-  }
-
-  Row goBackTextButton(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        MaterialButton(
-          padding: const EdgeInsets.all(0),
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, WelcomePage.pageName);
-          },
-          child: Text(
-            'Or Leave?',
-            style: TextStyle(
-                fontSize: 16,
-                color: Colors.pinkAccent.shade200,
-                fontFamily: 'Playpen'),
-          ),
-        )
-      ],
-    );
   }
 }

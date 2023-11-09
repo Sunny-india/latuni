@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../my_widgets/auth_widgets.dart';
 import '../my_widgets/my_button.dart';
 
 class AgentLoginPage extends StatefulWidget {
@@ -277,26 +278,6 @@ Container buildContainerForTFF({required Widget myChild}) {
           ]),
     ),
     child: myChild,
-  );
-}
-
-InputDecoration buildInputDecoration() {
-  return InputDecoration(
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: Colors.grey.shade300),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Colors.lightBlueAccent),
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Colors.red),
-    ),
-
-    // fillColor: Colors.grey.shade300,
-    //filled: true,
   );
 }
 
