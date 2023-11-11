@@ -51,6 +51,9 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
     Size size = MediaQuery.sizeOf(context);
     return WillPopScope(
       onWillPop: () async {
+        MyMessageHandler.showMySnackBar(
+            scaffoldKey: _scaffoldKey,
+            message: ' Please press home icon to leave');
         return false;
       },
       child: ScaffoldMessenger(
@@ -296,6 +299,9 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         },
         onFieldSubmitted: (value) {
           FocusScope.of(context).requestFocus(focusCity);
+          setState(() {
+            isPasswordHidden = true;
+          });
         },
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
@@ -313,7 +319,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           //todo: how to call validatorMethod (which works the same)
           //todo: from CustomerRegisterPage() here
           if (value!.isEmpty || value == '') {
-            return 'Please Enter name';
+            return 'Please Enter name did somechanges';
           } else if (value.isValidName() == false) {
             return '    enter valid name only';
           } else if (value.isValidName() == true) {
