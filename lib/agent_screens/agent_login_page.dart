@@ -36,6 +36,8 @@ class _AgentLoginPageState extends State<AgentLoginPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
+    print(size.width);
+    print(size.height);
     return ScaffoldMessenger(
       key: scaffoldKey,
       child: Scaffold(
@@ -67,7 +69,7 @@ class _AgentLoginPageState extends State<AgentLoginPage> {
                             color: Colors.grey.shade700, fontSize: 20)),
                     const SizedBox(height: 20),
 
-                    /// email textfield
+                    /// email TFF
                     buildContainerForTFF(
                       myChild: TextFormField(
                         controller: emailController,
@@ -91,7 +93,7 @@ class _AgentLoginPageState extends State<AgentLoginPage> {
                     ),
                     const SizedBox(height: 22),
 
-                    /// password textfield
+                    /// password TFF
                     buildContainerForTFF(
                       myChild: TextFormField(
                         controller: passwordController,
@@ -130,7 +132,18 @@ class _AgentLoginPageState extends State<AgentLoginPage> {
                     const SizedBox(height: 32),
 
                     /// login button
-                    MyButton(title: const Text('Login'), onTapped: agentLogin),
+                    MyButton(
+                        mHeight: size.height * .07,
+                        title: const Row(
+                          children: [
+                            Text(
+                              'Login',
+                              style: TextStyle(
+                                  fontSize: 70, color: Colors.black87),
+                            ),
+                          ],
+                        ),
+                        onTapped: agentLogin),
                     const SizedBox(height: 22),
 
                     /// or continue with
@@ -143,7 +156,10 @@ class _AgentLoginPageState extends State<AgentLoginPage> {
                         )),
                         const Text(
                           'Or Continue With',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Playpen',
+                              fontWeight: FontWeight.w500),
                         ),
                         Expanded(
                             child: Divider(
@@ -191,7 +207,10 @@ class _AgentLoginPageState extends State<AgentLoginPage> {
                         ),
                         const Text(
                           'Not a member?',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Playpen',
+                              fontWeight: FontWeight.w500),
                         ),
                         Expanded(
                           child: Divider(

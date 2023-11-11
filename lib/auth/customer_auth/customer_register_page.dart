@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:latuni/agent_screens/agent_login_page.dart';
 import 'package:latuni/my_widgets/my_button.dart';
 
-import '../../main_screens/welcome_page.dart';
 import '../../my_widgets/auth_widgets.dart';
+import '../../my_widgets/my_snackbar.dart';
 
 class CustomerRegisterPage extends StatefulWidget {
   const CustomerRegisterPage({super.key});
@@ -13,7 +13,10 @@ class CustomerRegisterPage extends StatefulWidget {
 }
 
 class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
+  ///
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   /// name, email, phone, password, confirm-password, and city controllers
   TextEditingController nameController = TextEditingController();
@@ -23,75 +26,101 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController cityController = TextEditingController();
 
+  /// all focusnodes
+  FocusNode focusName = FocusNode();
+  FocusNode focusEmail = FocusNode();
+  FocusNode focusPhone = FocusNode();
+  FocusNode focusPassword = FocusNode();
+  FocusNode focusConfirmPassword = FocusNode();
+  FocusNode focusCity = FocusNode();
+
   ///
   bool isPasswordHidden = true;
+
+  ///
+
+  @override
+  void dispose() {
+    FocusScope.of(context).unfocus();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          //reverse: true,
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: size.width * .05),
-            child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 10),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: ScaffoldMessenger(
+        key: _scaffoldKey,
+        child: Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              //reverse: true,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * .05),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 10),
 
-                  ///logo
-                  myLogo(size),
+                      ///logo
+                      myLogo(size),
 
-                  /// sign up text
-                  const AuthHeaderLabel(labelText: 'S I G N U P'),
-                  const SizedBox(height: 40),
+                      /// sign up text
+                      const AuthHeaderLabel(labelText: 'S I G N U P'),
+                      const SizedBox(height: 40),
 
-                  /// name TFF
-                  nameTFF(),
-                  const SizedBox(height: 20),
+                      /// name TFF
+                      nameTFF(),
+                      const SizedBox(height: 20),
 
-                  /// email TFF
-                  emailTFF(),
+                      /// email TFF
+                      emailTFF(),
 
-                  const SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-                  /// phone TFF
-                  phoneTFF(),
-                  const SizedBox(height: 20),
+                      /// phone TFF
+                      phoneTFF(),
+                      const SizedBox(height: 20),
 
-                  /// password TFF
-                  passwordTFF(),
-                  const SizedBox(height: 20),
+                      /// password TFF
+                      passwordTFF(),
+                      const SizedBox(height: 20),
 
-                  /// confirm-password TFF
-                  confirmPasswordTFF(),
+                      /// confirm-password TFF
+                      confirmPasswordTFF(),
 
-                  const SizedBox(height: 20),
-                  cityTFF(),
-                  const SizedBox(height: 10),
+                      const SizedBox(height: 20),
+                      cityTFF(),
+                      const SizedBox(height: 10),
 
-                  ///  have an account or not
-                  HaveAccountOrNot(
-                    account: 'Already Have an Account?',
-                    buttonLabel: 'Login',
-                    onPressed: () {
-                      // todo: later to be sent to login page
-                    },
+                      ///  have an account or not
+                      HaveAccountOrNot(
+                        account: 'Already Have an Account?',
+                        buttonLabel: 'Login',
+                        onPressed: () {
+                          // todo: later to be sent to login page
+                        },
+                      ),
+                      const SizedBox(height: 20),
+
+                      /// after all validations button to register
+                      buttonForRegistration(size),
+                      const SizedBox(height: 8),
+
+                      /// go back button
+                      //goBackTextButton(context),
+                      const SizedBox(height: 20),
+                    ],
                   ),
-                  const SizedBox(height: 20),
-
-                  /// after all validations button to register
-                  buttonForRegistration(size),
-                  const SizedBox(height: 8),
-
-                  /// go back button
-                  //goBackTextButton(context),
-                  const SizedBox(height: 20),
-                ],
+                ),
               ),
             ),
           ),
@@ -113,13 +142,15 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   Container nameTFF() {
     return buildContainerForTFF(
       myChild: TextFormField(
-        controller: emailController,
+        autofocus: true,
+        focusNode: focusName,
+        controller: nameController,
         decoration:
             buildInputDecoration().copyWith(hintText: 'Enter your name'),
         validator: (value) {
           //todo: how to call validatorMethod (which works the same)
           //todo: from CustomerRegisterPage() here
-          if (value!.isEmpty || value == '') {
+          if (value!.isEmpty) {
             return 'Please Enter name';
           } else if (value.isValidName() == false) {
             return '    enter valid name only';
@@ -129,6 +160,12 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             return null;
           }
         },
+        onFieldSubmitted: (value) {
+          FocusScope.of(context).requestFocus(focusEmail);
+        },
+
+        //onChanged: Focus.of(context).requestFocus(focusEmail),
+        //onTapOutside: (){},
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );
@@ -137,6 +174,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   Container emailTFF() {
     return buildContainerForTFF(
       myChild: TextFormField(
+        focusNode: focusEmail,
         controller: emailController,
         decoration:
             buildInputDecoration().copyWith(hintText: 'Enter your email'),
@@ -153,6 +191,9 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             return null;
           }
         },
+        onFieldSubmitted: (value) {
+          FocusScope.of(context).requestFocus(focusPhone);
+        },
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );
@@ -162,6 +203,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
     return buildContainerForTFF(
       myChild: TextFormField(
         controller: phoneController,
+        focusNode: focusPhone,
         keyboardType: TextInputType.number,
         decoration:
             buildInputDecoration().copyWith(hintText: 'Enter your phone'),
@@ -178,6 +220,9 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             return null;
           }
         },
+        onFieldSubmitted: (value) {
+          FocusScope.of(context).requestFocus(focusPassword);
+        },
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );
@@ -186,6 +231,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   Container passwordTFF() {
     return buildContainerForTFF(
       myChild: TextFormField(
+        focusNode: focusPassword,
         controller: passwordController,
         obscureText: isPasswordHidden,
         decoration: buildInputDecoration().copyWith(
@@ -211,6 +257,9 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             return null;
           }
         },
+        onFieldSubmitted: (value) {
+          FocusScope.of(context).requestFocus(focusConfirmPassword);
+        },
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );
@@ -219,6 +268,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   Container confirmPasswordTFF() {
     return buildContainerForTFF(
       myChild: TextFormField(
+        focusNode: focusConfirmPassword,
         controller: confirmPasswordController,
         obscureText: isPasswordHidden,
         decoration: buildInputDecoration().copyWith(
@@ -237,12 +287,15 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           //todo: how to call validatorMethod (which works the same)
           //todo: from CustomerRegisterPage() here
           if (value!.isEmpty || value == '') {
-            return 'Please re-Enter password';
+            return '  Please re-Enter password';
           } else if (value != passwordController.text) {
-            return 'password does not match';
+            return '  password does not match';
           } else {
             return null;
           }
+        },
+        onFieldSubmitted: (value) {
+          FocusScope.of(context).requestFocus(focusCity);
         },
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
@@ -252,6 +305,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   Container cityTFF() {
     return buildContainerForTFF(
       myChild: TextFormField(
+        focusNode: focusCity,
         controller: cityController,
         decoration:
             buildInputDecoration().copyWith(hintText: 'Enter your city'),
@@ -268,6 +322,9 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             return null;
           }
         },
+        onFieldSubmitted: (value) {
+          FocusScope.of(context).unfocus();
+        },
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );
@@ -277,14 +334,24 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
     return MyButton(
         mWidth: double.infinity,
         mHeight: size.height * .08,
-        title: const Text(
+        title: Text(
           'R E G I S T E R',
           style: TextStyle(
             fontFamily: 'Playpen',
-            fontSize: 50,
+            fontSize: size.width * .07,
             letterSpacing: 5,
           ),
         ),
-        onTapped: () {});
+        onTapped: () {
+          if (formKey.currentState!.validate()) {
+            print('valid');
+            print(nameController.text.toString());
+          } else {
+            print('Not Valid');
+            MyMessageHandler.showMySnackBar(
+                scaffoldKey: _scaffoldKey,
+                message: 'Please Fill all the fields above');
+          }
+        });
   }
 }

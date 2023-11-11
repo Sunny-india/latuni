@@ -50,7 +50,7 @@ class _WelcomePageState extends State<WelcomePage> {
       },
       {
         'image': 'assets/images/logos/person.png',
-        'label': 'Anon',
+        'label': 'Guest',
         'onPressed': anonymousLogin
       },
     ];

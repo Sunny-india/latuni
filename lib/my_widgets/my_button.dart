@@ -29,12 +29,13 @@ class MyButton extends StatelessWidget {
             color: backgroundColor ?? Colors.grey.shade300,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                offset: -const Offset(2, 2),
-                color: Colors.grey.shade50,
+                offset: -const Offset(3, 3),
+                color: Colors.white,
               ),
-              const BoxShadow(
-                offset: Offset(2, 1.5),
-                color: Color(0xffa7a9af),
+              BoxShadow(
+                offset: const Offset(3, 3),
+                color: Colors.grey.shade500,
+                //Color(0xffa7a9af),
               ),
             ],
           ),
