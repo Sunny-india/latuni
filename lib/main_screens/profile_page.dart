@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:latuni/main_screens/cart_page.dart';
@@ -17,6 +18,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   void logOut() {
+    FirebaseAuth.instance.signOut();
+
     Navigator.pushReplacementNamed(context, WelcomePage.pageName);
   }
 
@@ -297,7 +300,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           onPressed: logOut,
 
                           leadingIcon: Icons.logout,
-                          title: 'Log Out',
+                          title: 'LogOut',
                           subTitle: '',
                         ),
                         // YellowDivider(size: size),

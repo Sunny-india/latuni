@@ -14,8 +14,15 @@ import 'package:latuni/main_screens/supplier_home_page.dart';
 
 import 'auth/customer_auth/customer_register_page.dart';
 import 'main_screens/welcome_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(

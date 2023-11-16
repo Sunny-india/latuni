@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:latuni/agent_screens/agent_login_page.dart';
@@ -27,7 +28,9 @@ BoxDecoration buildBoxDecoration() {
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
+
   static String pageName = '/welcome_page';
+
   @override
   State<WelcomePage> createState() => _WelcomePageState();
 }
@@ -51,7 +54,7 @@ class _WelcomePageState extends State<WelcomePage> {
       {
         'image': 'assets/images/logos/person.png',
         'label': 'Guest',
-        'onPressed': anonymousLogin
+        'onPressed': guestLogin
       },
     ];
 
@@ -66,7 +69,22 @@ class _WelcomePageState extends State<WelcomePage> {
     print('Google');
   }
 
-  void anonymousLogin() {
+  void guestLogin() async {
+    try {
+      final userCredential = await FirebaseAuth.instance.signInAnonymously();
+      print("Signed in with temporary account.");
+      print(userCredential.user!.uid);
+      Navigator.pushReplacementNamed(context, CustomerHomePage.pageName);
+    } on FirebaseAuthException catch (e) {
+      //  print(e.code.toString());
+      switch (e.code) {
+        case "operation-not-allowed":
+          print("Anonymous auth hasn't been enabled for this project.");
+          break;
+        default:
+          print("Unknown error.");
+      }
+    }
     print('Anonymous Login');
   }
 

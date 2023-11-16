@@ -319,7 +319,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           //todo: how to call validatorMethod (which works the same)
           //todo: from CustomerRegisterPage() here
           if (value!.isEmpty || value == '') {
-            return 'Please Enter name did somechanges';
+            return 'Please Enter city name did somechanges';
           } else if (value.isValidName() == false) {
             return '    enter valid name only';
           } else if (value.isValidName() == true) {
