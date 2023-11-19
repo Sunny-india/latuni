@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
@@ -6,6 +7,8 @@ import 'package:latuni/auth/customer_auth/customer_register_page.dart';
 import 'package:latuni/main_screens/customer_home_page.dart';
 import 'package:latuni/main_screens/supplier_home_page.dart';
 
+import '../auth/customer_auth/customer_login_page.dart';
+import '../models/customer_model.dart';
 import '../my_widgets/my_button.dart';
 import '../utilities/clippers.dart';
 
@@ -36,26 +39,57 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  ///
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  CollectionReference customers =
+      FirebaseFirestore.instance.collection('customers');
+
+  ///
+  bool isProcessing = false;
+  // bool otherTapped = false;
+
   final Color backgroundColor = Colors.grey.shade300;
-  late List<Map<String, dynamic>> socialMediaList;
+  // late List<Map<String, dynamic>> socialMediaList;
+
+  bool myOtherLogs = false;
+  late List<BottomSocialWidgets> socialMediaList;
   @override
   void initState() {
     socialMediaList = [
-      {
-        'image': 'assets/images/logos/fb.png',
-        'label': 'Fb',
-        'onPressed': faceBookLogin
-      },
-      {
-        'image': 'assets/images/logos/google.png',
-        'label': 'Google',
-        'onPressed': googleLogin
-      },
-      {
-        'image': 'assets/images/logos/person.png',
-        'label': 'Guest',
-        'onPressed': guestLogin
-      },
+      BottomSocialWidgets(
+          image: 'assets/images/logos/fb.png',
+          label: 'Fb',
+          onPressed: faceBookLogin),
+
+      BottomSocialWidgets(
+          image: 'assets/images/logos/google.png',
+          label: 'Google',
+          onPressed: googleLogin),
+      BottomSocialWidgets(
+          image: 'assets/images/logos/person.png',
+          label: 'Guest',
+          onPressed: guestLogin),
+
+      ///
+      // {
+      //   'image': 'assets/images/logos/fb.png',
+      //   'label': 'Fb',
+      //   'onPressed': myOtherLogs ? () {} : faceBookLogin,
+      //   'otherLogs': myOtherLogs,
+      // },
+      // {
+      //   'image': 'assets/images/logos/google.png',
+      //   'label': 'Google',
+      //   'onPressed': myOtherLogs ? () {} : googleLogin,
+      //   'otherLogs': myOtherLogs,
+      // },
+      // {
+      //   'image': 'assets/images/logos/person.png',
+      //   'label': 'Guest',
+      //   'onPressed': myOtherLogs ? () {} : guestLogin,
+      //   'otherLogs': myOtherLogs,
+      // },
     ];
 
     super.initState();
@@ -71,21 +105,43 @@ class _WelcomePageState extends State<WelcomePage> {
 
   void guestLogin() async {
     try {
-      final userCredential = await FirebaseAuth.instance.signInAnonymously();
+      setState(() {
+        isProcessing = true;
+      });
+      await firebaseAuth.signInAnonymously().whenComplete(() async {
+        final userCredential = firebaseAuth.currentUser!.uid;
+        CustomerModel guestCustomer = CustomerModel(
+            cid: userCredential, name: '', email: '', phone: '', city: '');
+
+        await customers.doc(userCredential).set(guestCustomer.toFirebase());
+      });
+      setState(() {
+        isProcessing = false;
+      });
       print("Signed in with temporary account.");
-      print(userCredential.user!.uid);
+
+      //  print(userCredential.user!.uid);
       Navigator.pushReplacementNamed(context, CustomerHomePage.pageName);
     } on FirebaseAuthException catch (e) {
       //  print(e.code.toString());
       switch (e.code) {
         case "operation-not-allowed":
           print("Anonymous auth hasn't been enabled for this project.");
+          setState(() {
+            isProcessing = false;
+          });
           break;
         default:
           print("Unknown error.");
+          setState(() {
+            isProcessing = false;
+          });
       }
     }
-    print('Anonymous Login');
+    print('Anonymous Login done successfully');
+    setState(() {
+      isProcessing = false;
+    });
   }
 
   @override
@@ -151,14 +207,68 @@ class _WelcomePageState extends State<WelcomePage> {
                 SizedBox(height: size.height * .04),
 
                 /// bottom Row for social sign-ins
+                /// not working this way
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(socialMediaList.length, (index) {
-                      return BottomSocialWidgets(
-                          onPressed: socialMediaList[index]['onPressed'],
-                          image: socialMediaList[index]['image'],
-                          label: socialMediaList[index]['label']);
-                    })),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    BottomSocialWidgets(
+                        image: 'assets/images/logos/fb.png',
+                        label: 'FB',
+                        onPressed: faceBookLogin),
+                    BottomSocialWidgets(
+                        image: 'assets/images/logos/google.png',
+                        label: 'Google',
+                        onPressed: googleLogin),
+                    isProcessing
+                        ? const CircularProgressIndicator(
+                            color: Colors.red,
+                          )
+                        : BottomSocialWidgets(
+                            image: 'assets/images/logos/person.png',
+                            label: 'Guest',
+                            onPressed: guestLogin,
+                          ),
+                  ],
+                  // List.generate(
+                  //   socialMediaList.length,
+                  //   (index) {
+                  //     return BottomSocialWidgets(
+                  //         onPressed: isProcessing
+                  //             ? () {}
+                  //             : socialMediaList[index].onPressed,
+                  //         image: socialMediaList[index].image,
+                  //         label: socialMediaList[index].label);
+                  //   },
+                  // ),
+                ),
+
+                // Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       BottomSocialWidgets(
+                //         onPressed: () {
+                //           faceBookLogin();
+                //         },
+                //         image: 'assets/images/logos/fb.png',
+                //         label: 'Fb',
+                //       ),
+                //       BottomSocialWidgets(
+                //         onPressed: googleLogin,
+                //         image: 'assets/images/logos/google.png',
+                //         label: 'Google',
+                //       ),
+                //       isProcessing
+                //           ? const CircularProgressIndicator(
+                //               color: Colors.red,
+                //             )
+                //           : BottomSocialWidgets(
+                //               onPressed: guestLogin,
+                //               image: 'assets/images/logos/person.png',
+                //               label: 'Guest',
+                //             ),
+                //     ]),
+
+                ///
               ],
             ),
           ),
@@ -294,7 +404,7 @@ class RightCustomerContainer extends StatelessWidget {
                 onTapped: () {
                   //todo:for customers login later
                   Navigator.pushReplacementNamed(
-                      context, CustomerHomePage.pageName);
+                      context, CustomerLoginPage.pageName);
                 }),
             const SizedBox(
               height: 20,
@@ -316,14 +426,17 @@ class RightCustomerContainer extends StatelessWidget {
 }
 
 class BottomSocialWidgets extends StatelessWidget {
-  const BottomSocialWidgets(
+  BottomSocialWidgets(
       {super.key,
       required this.image,
       required this.label,
-      required this.onPressed});
+      required this.onPressed,
+      this.otherLogs = false});
   final String image;
   final String label;
   final Function() onPressed;
+  late bool otherLogs;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(

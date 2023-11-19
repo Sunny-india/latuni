@@ -1,9 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:latuni/agent_screens/agent_login_page.dart';
+import 'package:latuni/auth/customer_auth/customer_login_page.dart';
 import 'package:latuni/my_widgets/my_button.dart';
 
+//import '../../firebase_auth.dart';
+import '../../models/customer_model.dart';
 import '../../my_widgets/auth_widgets.dart';
 import '../../my_widgets/my_snackbar.dart';
+// import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class CustomerRegisterPage extends StatefulWidget {
   const CustomerRegisterPage({super.key});
@@ -13,20 +19,35 @@ class CustomerRegisterPage extends StatefulWidget {
 }
 
 class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
-  ///
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  //
+  /// GlobalKey things
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
 
-  /// name, email, phone, password, confirm-password, and city controllers
+  ///
+
+  /// firebase things
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  CollectionReference customers =
+      FirebaseFirestore.instance.collection('customers');
+
+  ///
+
+  /// TextFormField things
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   TextEditingController cityController = TextEditingController();
 
-  /// all focusnodes
+  ///
+  late String _uid; // for storing customer uid
+
+  /// All FocusNodes
   FocusNode focusName = FocusNode();
   FocusNode focusEmail = FocusNode();
   FocusNode focusPhone = FocusNode();
@@ -35,16 +56,116 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   FocusNode focusCity = FocusNode();
 
   ///
+//
+  /// All booleans
   bool isPasswordHidden = true;
+  bool isProcessing = false;
 
   ///
-
-  @override
-  void dispose() {
-    FocusScope.of(context).unfocus();
-    // TODO: implement dispose
-    super.dispose();
+  void cleanController() {
+    nameController.clear();
+    emailController.clear();
+    phoneController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
+    cityController.clear();
   }
+
+  /// signUp method starts
+  signUp() async {
+    // checking
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        isProcessing = true;
+      });
+      try {
+        //in try block first
+        await firebaseAuth.createUserWithEmailAndPassword(
+            email: emailController.text.toString(),
+            password: passwordController.text.toString());
+
+        setState(() {
+          formKey.currentState!
+              .reset(); // this single line method is not working, Raunak Bhaiya
+        });
+        /*
+        // for storing images named on their email. When the app requires to save
+        // images by the user.
+
+      // step 1. create a reference for firebase_storage
+        final firebase_storage.Reference ref = firebase_storage
+            .FirebaseStorage.instance
+            .ref('customerImages/${email}.jpg');
+
+         // step 2. in that created path, we send out XFile type file's path
+        await ref.putFile(
+            File(imageFile.path)); // this imageFile must be of XFile type
+
+        // step 3. from Firebase storage, we need to download that URL
+        // and have it saved in an File type variable.
+       //File? profileImage= await ref.getDownloadURL();
+       */
+        _uid = firebaseAuth.currentUser!.uid; // initiated here for usage now
+
+        CustomerModel customerModel = CustomerModel(
+          cid: _uid,
+          name: nameController.text.toString(),
+          email: emailController.text.toString(),
+          phone: phoneController.text.toString(),
+          address: '',
+          city: cityController.text.toString(),
+        );
+        MyMessageHandler.showMySnackBar(
+            scaffoldKey: _scaffoldKey,
+            message: ' User Created.Taking to login page. Login from there');
+        await customers.doc(_uid).set(customerModel.toFirebase());
+
+        // later will redirect to the login page,
+        //Navigator.pushReplacementNamed(context, CustomerHomePage.pageName);
+
+        //  the last action in try block
+        cleanController();
+        setState(() {
+          isProcessing = false;
+        });
+        Navigator.pushReplacementNamed(context, CustomerLoginPage.pageName);
+        // try block ends here
+      } on FirebaseAuthException catch (e) {
+        // in catch block, multiple if
+        if (e.code == 'weak-password') {
+          setState(() {
+            isProcessing = false;
+          });
+          MyMessageHandler.showMySnackBar(
+              scaffoldKey: _scaffoldKey,
+              message: 'The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          setState(() {
+            isProcessing = false;
+          });
+          MyMessageHandler.showMySnackBar(
+              scaffoldKey: _scaffoldKey,
+              message: 'Email already in use. so Login');
+        }
+      }
+    } else {
+      setState(() {
+        isProcessing = false;
+      });
+      //when either TFF is not validated
+      MyMessageHandler.showMySnackBar(
+          scaffoldKey: _scaffoldKey,
+          message: 'Please fill all the fields above');
+    }
+  }
+
+  /// signUp method ends
+  @override
+  // void dispose() {
+  //   FocusScope.of(context).unfocus();
+  //   // TODO: implement dispose
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +174,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
       onWillPop: () async {
         MyMessageHandler.showMySnackBar(
             scaffoldKey: _scaffoldKey,
-            message: ' Please press home icon to leave');
+            message: ' Please press Home icon to leave');
         return false;
       },
       child: ScaffoldMessenger(
@@ -63,8 +184,10 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
             child: SingleChildScrollView(
               //reverse: true,
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * .05),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: size.width * .07, vertical: size.height * .015),
+                alignment: Alignment.center,
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -86,7 +209,6 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
 
                       /// email TFF
                       emailTFF(),
-
                       const SizedBox(height: 20),
 
                       /// phone TFF
@@ -97,10 +219,15 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                       passwordTFF(),
                       const SizedBox(height: 20),
 
-                      /// confirm-password TFF
+                      /// confirm password TFF
                       confirmPasswordTFF(),
-
                       const SizedBox(height: 20),
+
+                      /// address TFF
+                      //   addressTFF(), // will have it called later.
+                      // const SizedBox(height: 20),
+
+                      /// city TFF
                       cityTFF(),
                       const SizedBox(height: 10),
 
@@ -110,16 +237,30 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                         buttonLabel: 'Login',
                         onPressed: () {
                           // todo: later to be sent to login page
+                          Navigator.pushReplacementNamed(
+                              context, CustomerLoginPage.pageName);
                         },
                       ),
                       const SizedBox(height: 20),
 
                       /// after all validations button to register
-                      buttonForRegistration(size),
-                      const SizedBox(height: 8),
 
-                      /// go back button
-                      //goBackTextButton(context),
+                      isProcessing
+                          ? CircularProgressIndicator()
+                          : MyButton(
+                              mWidth: double.infinity,
+                              mHeight: size.height * .08,
+                              title: Text(
+                                'R E G I S T E R',
+                                style: TextStyle(
+                                  fontFamily: 'Playpen',
+                                  fontSize: size.width * .07,
+                                  letterSpacing: 5,
+                                ),
+                              ),
+                              onTapped: () async {
+                                signUp();
+                              }),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -254,7 +395,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           //todo: from CustomerRegisterPage() here
           if (value!.isEmpty || value == '') {
             return 'Please Enter password';
-          } else if (value!.length < 6) {
+          } else if (value.length < 6) {
             return 'Please enter at least 6 digits';
           } else {
             return null;
@@ -308,6 +449,38 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
     );
   }
 
+//
+  Container addressTFF() {
+    return buildContainerForTFF(
+      myChild: TextFormField(
+        focusNode: focusCity,
+        controller: addressController,
+        decoration:
+            buildInputDecoration().copyWith(hintText: 'Your address here'),
+        validator: (value) {
+          //todo: how to call validatorMethod (which works the same)
+          //todo: from CustomerRegisterPage() here
+          if (value!.isEmpty || value == '') {
+            return '  Right Address means precise delivery';
+          }
+          // else if (value.isValidName() == false) {
+          //   return '    enter valid name only';
+          // } else if (value.isValidName() == true) {
+          //   return null;
+          // }
+          else {
+            return null;
+          }
+        },
+        onFieldSubmitted: (value) {
+          FocusScope.of(context).unfocus();
+        },
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+      ),
+    );
+  }
+  //
+
   Container cityTFF() {
     return buildContainerForTFF(
       myChild: TextFormField(
@@ -334,30 +507,5 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),
     );
-  }
-
-  MyButton buttonForRegistration(Size size) {
-    return MyButton(
-        mWidth: double.infinity,
-        mHeight: size.height * .08,
-        title: Text(
-          'R E G I S T E R',
-          style: TextStyle(
-            fontFamily: 'Playpen',
-            fontSize: size.width * .07,
-            letterSpacing: 5,
-          ),
-        ),
-        onTapped: () {
-          if (formKey.currentState!.validate()) {
-            print('valid');
-            print(nameController.text.toString());
-          } else {
-            print('Not Valid');
-            MyMessageHandler.showMySnackBar(
-                scaffoldKey: _scaffoldKey,
-                message: 'Please Fill all the fields above');
-          }
-        });
   }
 }

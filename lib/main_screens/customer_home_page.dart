@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:latuni/main_screens/category_page.dart';
 import 'package:latuni/main_screens/profile_page.dart';
 import 'package:latuni/main_screens/store_page.dart';
+import 'package:latuni/my_widgets/my_snackbar.dart';
 
 import '../my_widgets/decorated_container.dart';
 import 'cart_page.dart';
@@ -15,6 +16,9 @@ class CustomerHomePage extends StatefulWidget {
 }
 
 class _CustomerHomePageState extends State<CustomerHomePage> {
+  /// GlobalKey things
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
+      GlobalKey<ScaffoldMessengerState>();
   int _selectedIndex = 0;
 
   List<Widget> pages = [
@@ -34,29 +38,41 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     var width = size.width;
-    return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      body: SafeArea(child: pages[_selectedIndex]),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
-        selectedIconTheme: IconThemeData(size: width * .09),
-        unselectedItemColor: Colors.grey.shade900,
-        iconSize: width * .065,
-        selectedItemColor: Colors.red.shade600,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: onBottomNavigationTap,
-        items: <BottomNavigationBarItem>[
-          myBottomNavigationBarItem(myIcon: Icons.home, myLabel: 'Home'),
-          myBottomNavigationBarItem(myIcon: Icons.search, myLabel: 'search'),
-          myBottomNavigationBarItem(
-              myIcon: Icons.shop_2_outlined, myLabel: 'store'),
-          myBottomNavigationBarItem(
-              myIcon: Icons.shopping_cart_outlined, myLabel: 'cart'),
-          myBottomNavigationBarItem(myIcon: Icons.person, myLabel: 'profile'),
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        MyMessageHandler.showMySnackBar(
+            scaffoldKey: _scaffoldKey, message: 'No Return System');
+        return false;
+      },
+      child: ScaffoldMessenger(
+        key: _scaffoldKey,
+        child: Scaffold(
+          backgroundColor: Colors.grey.shade100,
+          body: SafeArea(child: pages[_selectedIndex]),
+          bottomNavigationBar: BottomNavigationBar(
+            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+            selectedIconTheme: IconThemeData(size: width * .09),
+            unselectedItemColor: Colors.grey.shade900,
+            iconSize: width * .065,
+            selectedItemColor: Colors.red.shade600,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _selectedIndex,
+            onTap: onBottomNavigationTap,
+            items: <BottomNavigationBarItem>[
+              myBottomNavigationBarItem(myIcon: Icons.home, myLabel: 'Home'),
+              myBottomNavigationBarItem(
+                  myIcon: Icons.search, myLabel: 'search'),
+              myBottomNavigationBarItem(
+                  myIcon: Icons.shop_2_outlined, myLabel: 'store'),
+              myBottomNavigationBarItem(
+                  myIcon: Icons.shopping_cart_outlined, myLabel: 'cart'),
+              myBottomNavigationBarItem(
+                  myIcon: Icons.person, myLabel: 'profile'),
+            ],
+          ),
+        ),
       ),
     );
   }

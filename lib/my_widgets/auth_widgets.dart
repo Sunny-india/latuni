@@ -8,7 +8,7 @@ class AuthHeaderLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
           labelText,

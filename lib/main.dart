@@ -12,6 +12,7 @@ import 'package:latuni/main_screens/customer_home_page.dart';
 import 'package:latuni/main_screens/dashboard.dart';
 import 'package:latuni/main_screens/supplier_home_page.dart';
 
+import 'auth/customer_auth/customer_login_page.dart';
 import 'auth/customer_auth/customer_register_page.dart';
 import 'main_screens/welcome_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,6 +36,7 @@ void main() async {
 
       ///  customers pages start here
       CustomerRegisterPage.pageName: (context) => const CustomerRegisterPage(),
+      CustomerLoginPage.pageName: (context) => const CustomerLoginPage(),
       CustomerHomePage.pageName: (context) => const CustomerHomePage(),
       CustomerOrderPage.pageName: (context) => const CustomerOrderPage(),
       WishlistPage.pageName: (context) => const WishlistPage(),

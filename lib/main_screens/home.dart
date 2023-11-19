@@ -18,6 +18,7 @@ class HomePage extends StatelessWidget {
             elevation: 0,
             backgroundColor: Colors.grey.shade100,
             bottom: TabBar(
+                tabAlignment: TabAlignment.start,
                 indicatorColor: Colors.red.shade100,
                 indicatorSize: TabBarIndicatorSize.label,
                 isScrollable: true,

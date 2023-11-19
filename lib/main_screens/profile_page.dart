@@ -234,6 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ///container for email, phone number, and address
                   ContainerForProfile(
                     myChild: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         const RepeatedListTile(
                           leadingIcon: Icons.email_outlined,
@@ -267,6 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ///container for editing email, phone number, and address settings changed
                   ContainerForProfile(
                     myChild: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         /// for editing profile
                         RepeatedListTile(
@@ -466,7 +468,10 @@ class RepeatedListTile extends StatelessWidget {
         ),
         subtitle: Text(
           subTitle,
-          style: const TextStyle(color: Colors.black54),
+          style: const TextStyle(
+            color: Colors.black54,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ),
     );
