@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,8 @@ import '../customer_screens/customer_order_page.dart';
 import '../customer_screens/wishlist_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
-
+  ProfilePage({super.key, required this.documentId});
+  late String documentId;
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -31,293 +32,327 @@ class _ProfilePageState extends State<ProfilePage> {
     Navigator.pushNamed(context, WishlistPage.pageName);
   }
 
+  CollectionReference customers =
+      FirebaseFirestore.instance.collection('customers');
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
-    return Scaffold(
-        backgroundColor: Colors.grey.shade200,
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              elevation: 0,
-              backgroundColor:
-                  Colors.white, // Colors.grey.shade200 matching scaffold also
-              centerTitle: true,
-              pinned: true,
-              floating: true,
-              expandedHeight: 160,
-              flexibleSpace: LayoutBuilder(builder: (context, constraints) {
-                return FlexibleSpaceBar(
-                  title: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 200),
-                    opacity: constraints.biggest.height <= 120 ? 1 : 0,
-                    child: Text(
-                      'A C C O U N T',
-                      style: TextStyle(
-                          color: constraints.biggest.height <= 120
-                              ? Colors.black
-                              : Colors.white),
-                    ),
-                  ),
-                  background: Container(
-                    padding: EdgeInsets.only(left: size.width * .09, top: 20),
-                    decoration: const BoxDecoration(
-                      gradient:
-                          LinearGradient(colors: [Colors.yellow, Colors.brown]),
-                    ),
-                    child: const Row(
-                      children: [
-                        CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage(
-                                'assets/images/rubber_bands/disco/DISCO_0.JPG')),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          'GUEST',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20,
-                              fontFamily: 'Playpen'),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              }),
-            ),
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * .02,
-                  ),
-
-                  /// cart, orders, wishlist containers in one container
-                  Container(
-                    height: 100, // todo: set in ratio
-                    width: size.width * .9,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(45),
-                      boxShadow: [
-                        const BoxShadow(
-                            color: Colors.white,
-                            offset: Offset(-1, -2),
-                            spreadRadius: 1),
-                        BoxShadow(
-                            color: Colors.grey.shade400,
-                            offset: const Offset(1, 2),
-                            spreadRadius: .5)
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        /// cart button
-                        Container(
-                            height: 80,
-                            width: size.width * .2,
-                            decoration: const BoxDecoration(
-                              color: Colors.black54,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(50),
-                                  bottomLeft: Radius.circular(50)),
+    return FutureBuilder<DocumentSnapshot>(
+        future: customers.doc(widget.documentId).get(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Something went wrong'),
+            );
+          }
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return const Center(
+              child: Text('No Data Exists'),
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            ///
+            Map<String, dynamic> customerData =
+                snapshot.data!.data() as Map<String, dynamic>;
+            return Scaffold(
+                backgroundColor: Colors.grey.shade200,
+                body: CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      elevation: 0,
+                      backgroundColor: Colors
+                          .white, // Colors.grey.shade200 matching scaffold also
+                      centerTitle: true,
+                      pinned: true,
+                      floating: true,
+                      expandedHeight: 160,
+                      flexibleSpace:
+                          LayoutBuilder(builder: (context, constraints) {
+                        return FlexibleSpaceBar(
+                          title: AnimatedOpacity(
+                            duration: const Duration(milliseconds: 200),
+                            opacity: constraints.biggest.height <= 120 ? 1 : 0,
+                            child: Text(
+                              'A C C O U N T',
+                              style: TextStyle(
+                                  color: constraints.biggest.height <= 120
+                                      ? Colors.black
+                                      : Colors.white),
                             ),
-                            alignment: Alignment.center,
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const CartPage(
-                                    back: AppbarBackButton(),
-                                  );
-                                }));
-                              },
-                              child: const FittedBox(
-                                child: Text(
-                                  'Cart',
-                                  style: TextStyle(color: Colors.white),
+                          ),
+                          background: Container(
+                            padding: EdgeInsets.only(
+                                left: size.width * .09, top: 20),
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [Colors.yellow, Colors.brown]),
+                            ),
+                            child: const Row(
+                              children: [
+                                CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: AssetImage(
+                                        'assets/images/rubber_bands/disco/DISCO_0.JPG')),
+                                SizedBox(
+                                  width: 20,
                                 ),
-                              ),
-                            )),
-
-                        /// order button
-                        Container(
-                            height: 80,
-                            width: size.width * .4,
-                            decoration: const BoxDecoration(
-                              color: Colors.yellow,
-                            ),
-                            alignment: Alignment.center,
-                            child: TextButton(
-                              onPressed: goToCustomerOrderPage,
-                              child: const FittedBox(
-                                child: Text(
-                                  'ORDERS',
+                                Text(
+                                  'GUEST',
                                   style: TextStyle(
-                                      color: Colors.black54, fontSize: 40),
-                                ),
-                              ),
-                            )),
-
-                        /// wishlist container
-                        Container(
-                          height: 80,
-                          width: size.width * .2,
-                          decoration: const BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(50),
-                                bottomRight: Radius.circular(50)),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20,
+                                      fontFamily: 'Playpen'),
+                                )
+                              ],
+                            ),
                           ),
-                          alignment: Alignment.center,
-                          child: TextButton(
-                            onPressed: goToWishlistPage,
-                            child: const FittedBox(
-                              child: Text(
-                                'WishList',
-                                style: TextStyle(color: Colors.white),
+                        );
+                      }),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: size.height * .02,
+                          ),
+
+                          /// cart, orders, wishlist containers in one container
+                          Container(
+                            height: 100, // todo: set in ratio
+                            width: size.width * .9,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(45),
+                              boxShadow: [
+                                const BoxShadow(
+                                    color: Colors.white,
+                                    offset: Offset(-1, -2),
+                                    spreadRadius: 1),
+                                BoxShadow(
+                                    color: Colors.grey.shade400,
+                                    offset: const Offset(1, 2),
+                                    spreadRadius: .5)
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                /// cart button
+                                Container(
+                                    height: 80,
+                                    width: size.width * .2,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.black54,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(50),
+                                          bottomLeft: Radius.circular(50)),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const CartPage(
+                                            back: AppbarBackButton(),
+                                          );
+                                        }));
+                                      },
+                                      child: const FittedBox(
+                                        child: Text(
+                                          'Cart',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    )),
+
+                                /// order button
+                                Container(
+                                    height: 80,
+                                    width: size.width * .4,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.yellow,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: TextButton(
+                                      onPressed: goToCustomerOrderPage,
+                                      child: const FittedBox(
+                                        child: Text(
+                                          'ORDERS',
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 40),
+                                        ),
+                                      ),
+                                    )),
+
+                                /// wishlist container
+                                Container(
+                                  height: 80,
+                                  width: size.width * .2,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black54,
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(50),
+                                        bottomRight: Radius.circular(50)),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: TextButton(
+                                    onPressed: goToWishlistPage,
+                                    child: const FittedBox(
+                                      child: Text(
+                                        'WishList',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: size.height * .03),
+
+                          /// image container
+                          /// todo: to be changed later by actual logo
+                          // LayoutBuilder(
+                          //   builder: (context, constraints) {
+                          //     if (constraints.maxWidth > 600) {
+                          //       return ClipRRect(
+                          //         borderRadius: BorderRadius.circular(18),
+                          //         child: Container(
+                          //           height: size.height * .4,
+                          //           width: size.width * .85,
+                          //           decoration: BoxDecoration(
+                          //             borderRadius: BorderRadius.circular(18),
+                          //           ),
+                          //           child: Image.asset(
+                          //             'assets/images/rubber_bands/disco/DISCO_3.JPG',
+                          //             fit: BoxFit.cover,
+                          //           ),
+                          //         ),
+                          //       );
+                          //     } else {
+                          //       return const Text('OKIE');
+                          //     }
+                          //   },
+                          // ),
+                          ClipPath(
+                            clipper: ParchiBottom(),
+                            child: Container(
+                              height: size.height * .25,
+                              width: size.width * .9,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/images/rubber_bands/disco/DISCO_3.JPG',
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: size.height * .03),
 
-                  /// image container
-                  /// todo: to be changed later by actual logo
-                  // LayoutBuilder(
-                  //   builder: (context, constraints) {
-                  //     if (constraints.maxWidth > 600) {
-                  //       return ClipRRect(
-                  //         borderRadius: BorderRadius.circular(18),
-                  //         child: Container(
-                  //           height: size.height * .4,
-                  //           width: size.width * .85,
-                  //           decoration: BoxDecoration(
-                  //             borderRadius: BorderRadius.circular(18),
-                  //           ),
-                  //           child: Image.asset(
-                  //             'assets/images/rubber_bands/disco/DISCO_3.JPG',
-                  //             fit: BoxFit.cover,
-                  //           ),
-                  //         ),
-                  //       );
-                  //     } else {
-                  //       return const Text('OKIE');
-                  //     }
-                  //   },
-                  // ),
-                  ClipPath(
-                    clipper: ParchiBottom(),
-                    child: Container(
-                      height: size.height * .25,
-                      width: size.width * .9,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/rubber_bands/disco/DISCO_3.JPG',
+                          /// account info divider & label
+                          const ProfileHeaderLabel(label: ' Account info '),
+
+                          ///container for email, phone number, and address
+                          ContainerForProfile(
+                            myChild: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                RepeatedListTile(
+                                  leadingIcon: Icons.email_outlined,
+                                  title: 'Email Address',
+                                  subTitle: customerData['email'].toString(),
+                                ),
+                                const RedDotRow(),
+                                // RedDivider(size: size),
+                                RepeatedListTile(
+                                  leadingIcon: Icons.phone_android_outlined,
+                                  title: 'Phone Number',
+                                  subTitle: customerData['phone'] ?? '00000',
+                                ),
+                                const RedDotRow(),
+
+                                //RedDivider(size: size),
+                                RepeatedListTile(
+                                  leadingIcon: Icons.location_on_outlined,
+                                  title: 'Address',
+                                  subTitle: customerData['address'] ??
+                                      'Ex: Kothi No D/60,\nKeshav Nagar, Numaish Camp, Saharanpur',
+                                ),
+                                RedDivider(size: size),
+                              ],
+                            ),
                           ),
-                          fit: BoxFit.cover,
-                        ),
+
+                          /// account setting divider and label
+                          const ProfileHeaderLabel(label: ' Account settings '),
+
+                          ///container for editing email, phone number, and address settings changed
+                          ContainerForProfile(
+                            myChild: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                /// for editing profile
+                                RepeatedListTile(
+                                  onPressed: () {
+                                    // todo: on tapping edit whole profile from here to database
+                                  },
+                                  leadingIcon: Icons.edit,
+                                  title: 'Edit Profile',
+                                  subTitle: '',
+                                ),
+                                const RedDotRow(),
+                                // RedDivider(size: size),
+
+                                /// for editing password
+                                RepeatedListTile(
+                                  onPressed: () {
+                                    // todo: on tapping edit phone number from here to database
+                                    // todo: later, we might use it for OTP purpose
+                                  },
+                                  leadingIcon: Icons.lock,
+                                  title: 'Change password',
+                                  subTitle: '',
+                                ),
+                                const RedDotRow(),
+                                //RedDivider(size: size),
+
+                                /// for loggingOut
+                                RepeatedListTile(
+                                  // todo: for logout from database
+
+                                  onPressed: logOut,
+
+                                  leadingIcon: Icons.logout,
+                                  title: 'LogOut',
+                                  subTitle: '',
+                                ),
+                                // YellowDivider(size: size),
+                                RedDivider(size: size),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        ],
                       ),
                     ),
-                  ),
+                  ],
+                ));
 
-                  /// account info divider & label
-                  const ProfileHeaderLabel(label: ' Account info '),
-
-                  ///container for email, phone number, and address
-                  ContainerForProfile(
-                    myChild: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const RepeatedListTile(
-                          leadingIcon: Icons.email_outlined,
-                          title: 'Email Address',
-                          subTitle: 'example@gmail.com',
-                        ),
-                        const RedDotRow(),
-                        // RedDivider(size: size),
-                        const RepeatedListTile(
-                          leadingIcon: Icons.phone_android_outlined,
-                          title: 'Phone Number',
-                          subTitle: '9810098100',
-                        ),
-                        const RedDotRow(),
-
-                        //RedDivider(size: size),
-                        const RepeatedListTile(
-                          leadingIcon: Icons.location_on_outlined,
-                          title: 'Address',
-                          subTitle:
-                              'Ex: Kothi No D/60,\nKeshav Nagar, Numaish Camp, Saharanpur',
-                        ),
-                        RedDivider(size: size),
-                      ],
-                    ),
-                  ),
-
-                  /// account setting divider and label
-                  const ProfileHeaderLabel(label: ' Account settings '),
-
-                  ///container for editing email, phone number, and address settings changed
-                  ContainerForProfile(
-                    myChild: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        /// for editing profile
-                        RepeatedListTile(
-                          onPressed: () {
-                            // todo: on tapping edit whole profile from here to database
-                          },
-                          leadingIcon: Icons.edit,
-                          title: 'Edit Profile',
-                          subTitle: '',
-                        ),
-                        const RedDotRow(),
-                        // RedDivider(size: size),
-
-                        /// for editing password
-                        RepeatedListTile(
-                          onPressed: () {
-                            // todo: on tapping edit phone number from here to database
-                            // todo: later, we might use it for OTP purpose
-                          },
-                          leadingIcon: Icons.lock,
-                          title: 'Change password',
-                          subTitle: '',
-                        ),
-                        const RedDotRow(),
-                        //RedDivider(size: size),
-
-                        /// for loggingOut
-                        RepeatedListTile(
-                          // todo: for logout from database
-
-                          onPressed: logOut,
-
-                          leadingIcon: Icons.logout,
-                          title: 'LogOut',
-                          subTitle: '',
-                        ),
-                        // YellowDivider(size: size),
-                        RedDivider(size: size),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                ],
-              ),
+            ///
+          }
+          return const Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.grey,
+              color: Colors.red,
             ),
-          ],
-        ));
+          );
+        });
   }
 }
 

@@ -38,6 +38,10 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
   bool isProcessing = false;
 
   void logIn() async {
+    setState(() {
+      FocusScope.of(context).unfocus();
+    });
+
     if (_formKey.currentState!.validate()) {
       setState(() {
         isProcessing = true;
@@ -46,12 +50,13 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: emailController.text.toString(),
             password: passwordController.text.toString());
-        print('Login Button printed');
+
         MyMessageHandler.showMySnackBar(
             scaffoldKey: _scaffoldKey, message: 'Login Successfully');
-        _formKey.currentState!.reset();
+
         Navigator.pushReplacementNamed(context, CustomerHomePage.pageName);
         setState(() {
+          _formKey.currentState!.reset();
           isProcessing = false;
         });
       } on FirebaseAuthException catch (e) {
@@ -60,7 +65,8 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
             isProcessing = false;
           });
           MyMessageHandler.showMySnackBar(
-              scaffoldKey: _scaffoldKey, message: 'User not found');
+              scaffoldKey: _scaffoldKey,
+              message: 'Either email or password does not match');
         } else if (e.code == 'user-disabled') {
           setState(() {
             isProcessing = false;
@@ -117,6 +123,8 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                       /// sign up text
                       const AuthHeaderLabel(labelText: 'Welcome'),
                       const SizedBox(height: 40),
+
+                      ///email TFF
                       buildContainerForTFF(
                         myChild: TextFormField(
                           autofocus: true,
@@ -144,6 +152,8 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                         ),
                       ),
                       const SizedBox(height: 20),
+
+                      /// password TFF
                       buildContainerForTFF(
                         myChild: TextFormField(
                           focusNode: focusPassword,

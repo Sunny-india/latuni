@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latuni/agent_screens/agent_login_page.dart';
+import 'package:latuni/auth/supplier_auth/supplier_register_page.dart';
 import 'package:latuni/customer_screens/customer_order_page.dart';
 import 'package:latuni/customer_screens/wishlist_page.dart';
 import 'package:latuni/dashboard_components/edit_business_page.dart';
@@ -42,6 +43,7 @@ void main() async {
       WishlistPage.pageName: (context) => const WishlistPage(),
 
       /// suppliers pages start here
+      SupplierRegisterPage.pageName: (context) => const SupplierRegisterPage(),
       SupplierHomePage.pageName: (context) => const SupplierHomePage(),
       DashboardPage.pageName: (context) => const DashboardPage(),
       MyStorePage.pageName: (context) => const MyStorePage(),

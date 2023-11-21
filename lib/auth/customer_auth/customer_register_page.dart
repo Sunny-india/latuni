@@ -216,7 +216,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                       const SizedBox(height: 20),
 
                       /// password TFF
-                      passwordTFF(),
+                      passwordTFF(size),
                       const SizedBox(height: 20),
 
                       /// confirm password TFF
@@ -259,6 +259,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                                 ),
                               ),
                               onTapped: () async {
+                                FocusScope.of(context).unfocus(); // not working
                                 signUp();
                               }),
                       const SizedBox(height: 20),
@@ -372,7 +373,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
     );
   }
 
-  Container passwordTFF() {
+  Container passwordTFF(Size size) {
     return buildContainerForTFF(
       myChild: TextFormField(
         focusNode: focusPassword,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:latuni/main_screens/category_page.dart';
 import 'package:latuni/main_screens/profile_page.dart';
@@ -19,6 +20,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   /// GlobalKey things
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
+
+  ///
   int _selectedIndex = 0;
 
   List<Widget> pages = [
@@ -26,8 +29,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     const CategoryPage(),
     const StoresPage(),
     const CartPage(),
-    const ProfilePage(),
+    ProfilePage(documentId: FirebaseAuth.instance.currentUser!.uid),
   ];
+
   void onBottomNavigationTap(int index) {
     setState(() {
       _selectedIndex = index;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:latuni/agent_screens/agent_login_page.dart';
 import 'package:latuni/auth/customer_auth/customer_register_page.dart';
+import 'package:latuni/auth/supplier_auth/supplier_register_page.dart';
 import 'package:latuni/main_screens/customer_home_page.dart';
 import 'package:latuni/main_screens/supplier_home_page.dart';
 
@@ -56,6 +57,7 @@ class _WelcomePageState extends State<WelcomePage> {
   late List<BottomSocialWidgets> socialMediaList;
   @override
   void initState() {
+    //  FocusScope.of(context).unfocus();
     socialMediaList = [
       BottomSocialWidgets(
           image: 'assets/images/logos/fb.png',
@@ -111,7 +113,12 @@ class _WelcomePageState extends State<WelcomePage> {
       await firebaseAuth.signInAnonymously().whenComplete(() async {
         final userCredential = firebaseAuth.currentUser!.uid;
         CustomerModel guestCustomer = CustomerModel(
-            cid: userCredential, name: '', email: '', phone: '', city: '');
+            cid: userCredential,
+            name: '',
+            email: '',
+            phone: '',
+            city: '',
+            address: '');
 
         await customers.doc(userCredential).set(guestCustomer.toFirebase());
       });
@@ -364,6 +371,8 @@ class LeftSupplierContainer extends StatelessWidget {
                 title: const Text('Sign Up'),
                 onTapped: () {
                   //todo: Sign Up later
+                  Navigator.pushReplacementNamed(
+                      context, SupplierRegisterPage.pageName);
                 }),
             const SizedBox(height: 10),
           ],
