@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:latuni/agent_screens/agent_login_page.dart';
+import 'package:latuni/auth/agent_auth/agent_login_page.dart';
 import 'package:latuni/auth/customer_auth/customer_login_page.dart';
 import 'package:latuni/my_widgets/my_button.dart';
 
@@ -28,9 +28,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   ///
 
   /// firebase things
-  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  CollectionReference customers =
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final CollectionReference _customers =
       FirebaseFirestore.instance.collection('customers');
 
   ///
@@ -80,7 +79,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
       });
       try {
         //in try block first
-        await firebaseAuth.createUserWithEmailAndPassword(
+        await _firebaseAuth.createUserWithEmailAndPassword(
             email: emailController.text.toString(),
             password: passwordController.text.toString());
 
@@ -88,24 +87,8 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
           formKey.currentState!
               .reset(); // this single line method is not working, Raunak Bhaiya
         });
-        /*
-        // for storing images named on their email. When the app requires to save
-        // images by the user.
 
-      // step 1. create a reference for firebase_storage
-        final firebase_storage.Reference ref = firebase_storage
-            .FirebaseStorage.instance
-            .ref('customerImages/${email}.jpg');
-
-         // step 2. in that created path, we send out XFile type file's path
-        await ref.putFile(
-            File(imageFile.path)); // this imageFile must be of XFile type
-
-        // step 3. from Firebase storage, we need to download that URL
-        // and have it saved in an File type variable.
-       //File? profileImage= await ref.getDownloadURL();
-       */
-        _uid = firebaseAuth.currentUser!.uid; // initiated here for usage now
+        _uid = _firebaseAuth.currentUser!.uid; // initiated here for usage now
 
         CustomerModel customerModel = CustomerModel(
           cid: _uid,
@@ -118,10 +101,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
         MyMessageHandler.showMySnackBar(
             scaffoldKey: _scaffoldKey,
             message: ' User Created.Taking to login page. Login from there');
-        await customers.doc(_uid).set(customerModel.toFirebase());
-
-        // later will redirect to the login page,
-        //Navigator.pushReplacementNamed(context, CustomerHomePage.pageName);
+        await _customers.doc(_uid).set(customerModel.toFirebase());
 
         //  the last action in try block
         cleanController();

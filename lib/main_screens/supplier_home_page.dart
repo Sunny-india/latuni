@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:latuni/main_screens/category_page.dart';
 import 'package:latuni/main_screens/dashboard.dart';
 import 'package:latuni/main_screens/store_page.dart';
+import 'package:latuni/main_screens/upload_product_page.dart';
 
 import '../my_widgets/decorated_container.dart';
 import 'home.dart';
@@ -21,10 +22,9 @@ class _SupplierHomePageState extends State<SupplierHomePage> {
     const CategoryPage(),
     const StoresPage(),
     const DashboardPage(),
-    const Center(
-      child: Text('Upload One'),
-    ),
-    // const CartPage(),
+
+    const UploadProductPage(),
+
     // const ProfilePage(),
   ];
   void onBottomNavigationTap(int index) {

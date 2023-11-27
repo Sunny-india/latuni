@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:latuni/dashboard_components/manage_products_page.dart';
@@ -56,7 +57,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Color backgroundColor = Colors.grey.shade100;
 
-  void logOut() {
+  void logOut() async {
     Navigator.pushReplacementNamed(context, WelcomePage.pageName);
   }
 
@@ -101,7 +102,10 @@ class _DashboardPageState extends State<DashboardPage> {
         actions: [
           IconButton(
             // todo: for logging out from database
-            onPressed: logOut,
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              logOut();
+            },
             icon: const Icon(
               Icons.logout,
               color: Colors.black,

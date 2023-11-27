@@ -83,6 +83,7 @@ class HaveAccountOrNot extends StatelessWidget {
 
 InputDecoration buildInputDecoration() {
   return InputDecoration(
+    labelStyle: const TextStyle(color: Colors.redAccent, letterSpacing: 1.5),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: BorderSide(color: Colors.grey.shade300),

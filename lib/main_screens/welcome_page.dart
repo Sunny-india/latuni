@@ -2,13 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
-import 'package:latuni/agent_screens/agent_login_page.dart';
+import 'package:latuni/auth/agent_auth/agent_login_page.dart';
 import 'package:latuni/auth/customer_auth/customer_register_page.dart';
 import 'package:latuni/auth/supplier_auth/supplier_register_page.dart';
 import 'package:latuni/main_screens/customer_home_page.dart';
 import 'package:latuni/main_screens/supplier_home_page.dart';
 
 import '../auth/customer_auth/customer_login_page.dart';
+import '../auth/supplier_auth/supplier_login_page.dart';
 import '../models/customer_model.dart';
 import '../my_widgets/my_button.dart';
 import '../utilities/clippers.dart';
@@ -363,7 +364,7 @@ class LeftSupplierContainer extends StatelessWidget {
                 onTapped: () {
                   //todo:for supplier login
                   Navigator.pushReplacementNamed(
-                      context, SupplierHomePage.pageName);
+                      context, SupplierLoginPage.pageName);
                 }),
             const SizedBox(height: 20),
             MyButton(

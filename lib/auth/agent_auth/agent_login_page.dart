@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../my_widgets/auth_widgets.dart';
-import '../my_widgets/my_button.dart';
+import '../../my_widgets/auth_widgets.dart';
+import '../../my_widgets/my_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AgentLoginPage extends StatefulWidget {
   const AgentLoginPage({super.key});
@@ -12,14 +14,26 @@ class AgentLoginPage extends StatefulWidget {
 }
 
 class _AgentLoginPageState extends State<AgentLoginPage> {
+  //
+
+  /// All TFF things
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  /// All GlobalKey things
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldMessengerState> scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
 
+  /// All boolean things
   bool isObscured = true;
   bool isProcessing = false;
+//
+  String? uid;
+
+  /// All Firebase things
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  CollectionReference agent = FirebaseFirestore.instance.collection('agents');
 
   ///===sign in with Google===///
   void signInWithGoogle() {
@@ -263,12 +277,10 @@ class _AgentLoginPageState extends State<AgentLoginPage> {
   }
 }
 
-Container buildContainerForTFF({
-  required Widget myChild,
-}) {
+Container buildContainerForTFF({required Widget myChild, double? mWidth}) {
   return Container(
     //height: 100,
-
+    width: mWidth,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(12),
       boxShadow: [

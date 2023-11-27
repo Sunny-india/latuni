@@ -1,21 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:latuni/auth/supplier_auth/supplier_register_page.dart';
 import 'package:latuni/my_widgets/my_button.dart';
 import 'package:latuni/my_widgets/my_snackbar.dart';
 
 import '../agent_auth/agent_login_page.dart';
-import '../../main_screens/customer_home_page.dart';
+import '../../main_screens/supplier_home_page.dart';
 import '../../my_widgets/auth_widgets.dart';
-import 'customer_register_page.dart';
 
-class CustomerLoginPage extends StatefulWidget {
-  const CustomerLoginPage({super.key});
-  static String pageName = '/customer_login_page';
+class SupplierLoginPage extends StatefulWidget {
+  const SupplierLoginPage({super.key});
+  static String pageName = '/supplier_login_page';
   @override
-  State<CustomerLoginPage> createState() => _CustomerLoginPageState();
+  State<SupplierLoginPage> createState() => _SupplierLoginPageState();
 }
 
-class _CustomerLoginPageState extends State<CustomerLoginPage> {
+class _SupplierLoginPageState extends State<SupplierLoginPage> {
   /// GlobalKey things
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -31,13 +31,21 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
   FocusNode focusEmail = FocusNode();
   FocusNode focusPassword = FocusNode();
 
-  /// All Firebase things
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  ///
 
   /// All boolean things
   bool isPasswordHidden = true;
   bool isProcessing = false;
 
+  /// All Firebase things
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  ///
+  void takeMeToSupplierHomePage() {
+    Navigator.pushReplacementNamed(context, SupplierHomePage.pageName);
+  }
+
+  ///
   void logIn() async {
     setState(() {
       FocusScope.of(context).unfocus();
@@ -48,18 +56,20 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
         isProcessing = true;
       });
       try {
-        await _firebaseAuth.signInWithEmailAndPassword(
+        await _auth.signInWithEmailAndPassword(
             email: emailController.text.toString(),
             password: passwordController.text.toString());
-        // print('${_firebaseAuth.currentUser} before if check method');
-        MyMessageHandler.showMySnackBar(
-            scaffoldKey: _scaffoldKey, message: 'Login Successfully');
-        takeMeToCustomerHomePage();
-        //  Navigator.pushReplacementNamed(context, CustomerHomePage.pageName);
-        setState(() {
-          _formKey.currentState!.reset();
-          isProcessing = false;
-        });
+
+        if (_auth.currentUser != null) {
+          MyMessageHandler.showMySnackBar(
+              scaffoldKey: _scaffoldKey, message: 'Login Successfully');
+
+          takeMeToSupplierHomePage();
+          setState(() {
+            _formKey.currentState!.reset();
+            isProcessing = false;
+          });
+        }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
           setState(() {
@@ -75,6 +85,12 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
           MyMessageHandler.showMySnackBar(
               scaffoldKey: _scaffoldKey,
               message: 'Account Suspended. Please contact administration');
+        } else if (e.code == 'user-not-found') {
+          setState(() {
+            isProcessing = false;
+          });
+          MyMessageHandler.showMySnackBar(
+              scaffoldKey: _scaffoldKey, message: 'User Not Found');
         }
       }
     } else {
@@ -84,10 +100,6 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
       MyMessageHandler.showMySnackBar(
           scaffoldKey: _scaffoldKey, message: 'Please fill-in all the fields');
     }
-  }
-
-  void takeMeToCustomerHomePage() {
-    Navigator.pushReplacementNamed(context, CustomerHomePage.pageName);
   }
 
   @override
@@ -139,7 +151,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                               .copyWith(hintText: 'Enter your email'),
                           validator: (value) {
                             //todo: how to call validatorMethod (which works the same)
-                            //todo: from CustomerRegisterPage() here
+                            //todo: from SupplierRegisterPage() here
                             if (value!.isEmpty || value == '') {
                               return 'Please Enter email';
                             } else if (value.isValidEmail() == false) {
@@ -179,7 +191,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                           ),
                           validator: (value) {
                             //todo: how to call validatorMethod (which works the same)
-                            //todo: from CustomerRegisterPage() here
+                            //todo: from SupplierRegisterPage() here
                             if (value!.isEmpty || value == '') {
                               return 'Please Enter password';
                             } else if (value.length < 6) {
@@ -203,7 +215,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                         onPressed: () {
                           // todo: later to be sent to login page
                           Navigator.pushReplacementNamed(
-                              context, CustomerRegisterPage.pageName);
+                              context, SupplierRegisterPage.pageName);
                         },
                       ),
                       const SizedBox(height: 40),

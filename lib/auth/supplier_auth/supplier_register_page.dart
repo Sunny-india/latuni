@@ -3,12 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:latuni/agent_screens/agent_login_page.dart';
+import 'package:latuni/auth/agent_auth/agent_login_page.dart';
+import 'package:latuni/auth/supplier_auth/supplier_login_page.dart';
 import 'package:latuni/my_widgets/my_button.dart';
 import 'dart:io'; // for handling files
 //import '../../firebase_auth.dart';
-import '../../main_screens/customer_home_page.dart';
-import '../../main_screens/supplier_home_page.dart';
 import '../../models/supplier_model.dart';
 import '../../my_widgets/auth_widgets.dart';
 import '../../my_widgets/my_snackbar.dart';
@@ -31,8 +30,8 @@ class _SupplierRegisterPageState extends State<SupplierRegisterPage> {
   ///
 
   /// firebase things
-  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  final firebaseFirestore = FirebaseFirestore.instance;
   CollectionReference suppliers =
       FirebaseFirestore.instance.collection('suppliers');
 
@@ -138,7 +137,7 @@ class _SupplierRegisterPageState extends State<SupplierRegisterPage> {
         });
         try {
           //in try block first
-          await firebaseAuth.createUserWithEmailAndPassword(
+          await _auth.createUserWithEmailAndPassword(
               email: emailController.text.toString(),
               password: passwordController.text.toString());
 
@@ -161,7 +160,7 @@ class _SupplierRegisterPageState extends State<SupplierRegisterPage> {
                 .reset(); // this single line method is not working, Raunak Bhaiya
           });
 
-          _sid = firebaseAuth.currentUser!.uid; // initiated here for usage now
+          _sid = _auth.currentUser!.uid; // initiated here for usage now
 
           SupplierModel supplierModel = SupplierModel(
             sid: _sid,
@@ -174,7 +173,7 @@ class _SupplierRegisterPageState extends State<SupplierRegisterPage> {
           );
           MyMessageHandler.showMySnackBar(
               scaffoldKey: _scaffoldKey,
-              message: ' User Created.Taking to login page. Login from there');
+              message: ' User Created. Please Login Now');
           await suppliers.doc(_sid).set(supplierModel.toFirebase());
 
           // later will redirect to the login page,
@@ -183,7 +182,7 @@ class _SupplierRegisterPageState extends State<SupplierRegisterPage> {
           //  the last action in try block
           cleanController();
 
-          Navigator.pushReplacementNamed(context, SupplierHomePage.pageName);
+          Navigator.pushReplacementNamed(context, SupplierLoginPage.pageName);
           setState(() {
             isProcessing = false;
             _imageFile = null;
@@ -361,9 +360,8 @@ class _SupplierRegisterPageState extends State<SupplierRegisterPage> {
                       account: 'Already Have an Account?',
                       buttonLabel: 'Login',
                       onPressed: () {
-                        // todo: later to be sent to login page
-                        // Navigator.pushReplacementNamed(
-                        //     context, SupplierLoginPage.pageName);
+                        Navigator.pushReplacementNamed(
+                            context, SupplierLoginPage.pageName);
                       },
                     ),
                     const SizedBox(height: 20),
