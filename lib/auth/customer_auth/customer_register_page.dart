@@ -226,7 +226,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
                       /// after all validations button to register
 
                       isProcessing
-                          ? CircularProgressIndicator()
+                          ? const CircularProgressIndicator()
                           : MyButton(
                               mWidth: double.infinity,
                               mHeight: size.height * .08,

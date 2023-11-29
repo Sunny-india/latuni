@@ -37,21 +37,21 @@ class _AgentLoginPageState extends State<AgentLoginPage> {
 
   ///===sign in with Google===///
   void signInWithGoogle() {
-    print('Sign in With Google');
+    //   print('Sign in With Google');
   }
 
   ///===sign in with Apple===///
 
   void signInWithApple() {
-    print('Sign in with Apple');
+    //print('Sign in with Apple');
   }
 
   void agentLogin() {}
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
-    print(size.width);
-    print(size.height);
+    // print(size.width);
+    // print(size.height);
     return ScaffoldMessenger(
       key: scaffoldKey,
       child: Scaffold(

@@ -42,15 +42,15 @@ class _KisanPageState extends State<KisanPage> {
                                     crossAxisCount: 3,
                                     crossAxisSpacing: 9,
                                     mainAxisSpacing: 30),
-                            itemCount: kisanBhai
-                                .length, // as much as the images available
+                            itemCount:
+                                kisan.length, // as much as the images available
                             itemBuilder: (context, index) {
                               return SubCategoryModel(
                                 mainCategoryName: 'Kisan Bhai',
-                                subCategoryName: kisanBhai[index],
+                                subCategoryName: kisan[index],
                                 assetName:
                                     'assets/images/rubber_bands/disco/DISCO_$index.JPG',
-                                assetLabel: kisanBhai[index],
+                                assetLabel: kisan[index],
                               );
                             }),
                       )

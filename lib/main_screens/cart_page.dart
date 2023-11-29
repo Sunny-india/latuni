@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:latuni/customer_screens/customer_order_page.dart';
 import 'package:latuni/main_screens/customer_home_page.dart';
 import 'package:latuni/my_widgets/appbar_widgets.dart';
 import 'package:latuni/my_widgets/decorated_container.dart';

@@ -49,10 +49,10 @@ class _KiranaGroceryPageState extends State<KiranaGroceryPage> {
                             itemBuilder: (context, index) {
                               return SubCategoryModel(
                                 mainCategoryName: 'Kirana / Grocery',
-                                subCategoryName: kiranaGrocery[index],
+                                subCategoryName: kirana[index],
                                 assetName:
                                     'assets/images/rubber_bands/disco/DISCO_$index.JPG',
-                                assetLabel: kiranaGrocery[index],
+                                assetLabel: kirana[index],
                               );
                             }),
                       ),

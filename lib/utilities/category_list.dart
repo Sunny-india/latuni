@@ -7,14 +7,17 @@
 // as long as the images related to it
 // are kept on asset images folder
 
-List<String> kisanBhai = ['sutli', 'Polybag', 'sutli', 'polybag'];
+List<String> mainCategoryList = ['kisan', 'dairy', 'kirana', 'clothing'];
+//
+List<String> kisan = ['sutli', 'Polybag', '24*30', '27*30'];
 List<String> dairy = [
   'rubber bands',
   'poly bags',
   'carry bags',
   'Pouches',
-]; // lldpe,
-List<String> kiranaGrocery = [
+];
+// lldpe,
+List<String> kirana = [
   'PolyBags',
   'LD',
   'PP',

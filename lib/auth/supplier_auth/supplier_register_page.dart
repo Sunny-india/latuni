@@ -127,6 +127,10 @@ class _SupplierRegisterPageState extends State<SupplierRegisterPage> {
     cityController.clear();
   }
 
+  void goToSupplierLoginPage() {
+    Navigator.pushReplacementNamed(context, SupplierLoginPage.pageName);
+  }
+
   /// signUp method starts
   signUp() async {
     // checking
@@ -181,8 +185,7 @@ class _SupplierRegisterPageState extends State<SupplierRegisterPage> {
 
           //  the last action in try block
           cleanController();
-
-          Navigator.pushReplacementNamed(context, SupplierLoginPage.pageName);
+          goToSupplierLoginPage();
           setState(() {
             isProcessing = false;
             _imageFile = null;

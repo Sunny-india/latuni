@@ -103,7 +103,7 @@ class SliderBar extends StatelessWidget {
               Text(
                 mainCategName,
                 textAlign: TextAlign.center,
-                textScaleFactor: 1.3,
+                textScaler: const TextScaler.linear(1.3),
                 style: const TextStyle(fontSize: 14),
               ),
               mainCategName == 'KISAN BHAI' ? const Text('') : const Text('>>'),

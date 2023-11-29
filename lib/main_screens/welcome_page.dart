@@ -6,7 +6,6 @@ import 'package:latuni/auth/agent_auth/agent_login_page.dart';
 import 'package:latuni/auth/customer_auth/customer_register_page.dart';
 import 'package:latuni/auth/supplier_auth/supplier_register_page.dart';
 import 'package:latuni/main_screens/customer_home_page.dart';
-import 'package:latuni/main_screens/supplier_home_page.dart';
 
 import '../auth/customer_auth/customer_login_page.dart';
 import '../auth/supplier_auth/supplier_login_page.dart';
@@ -99,11 +98,14 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 
   void faceBookLogin() {
-    print('FaceBook');
+    //print('FaceBook');
   }
 
   void googleLogin() {
-    print('Google');
+    // print('Google');
+  }
+  void goToCustomerHomePage() {
+    Navigator.pushReplacementNamed(context, CustomerHomePage.pageName);
   }
 
   void guestLogin() async {
@@ -126,27 +128,28 @@ class _WelcomePageState extends State<WelcomePage> {
       setState(() {
         isProcessing = false;
       });
-      print("Signed in with temporary account.");
+      //print("Signed in with temporary account.");
 
       //  print(userCredential.user!.uid);
-      Navigator.pushReplacementNamed(context, CustomerHomePage.pageName);
+      goToCustomerHomePage();
+      // Navigator.pushReplacementNamed(context, CustomerHomePage.pageName);
     } on FirebaseAuthException catch (e) {
       //  print(e.code.toString());
       switch (e.code) {
         case "operation-not-allowed":
-          print("Anonymous auth hasn't been enabled for this project.");
+          //print("Anonymous auth hasn't been enabled for this project.");
           setState(() {
             isProcessing = false;
           });
           break;
         default:
-          print("Unknown error.");
+          //print("Unknown error.");
           setState(() {
             isProcessing = false;
           });
       }
     }
-    print('Anonymous Login done successfully');
+
     setState(() {
       isProcessing = false;
     });
@@ -454,7 +457,6 @@ class BottomSocialWidgets extends StatelessWidget {
       child: SizedBox(
         width: 70,
         height: 90,
-        //  decoration: const BoxDecoration(color: Colors.deepPurple),
         child: FittedBox(
           child: Column(
             children: [
